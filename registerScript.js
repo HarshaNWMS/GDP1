@@ -1,34 +1,8 @@
-// register.js
-
-// document.getElementById('registrationForm').addEventListener('submit', function(event) {
-//     event.preventDefault();
-//     // Get user input from the registration form
-//     var username = document.getElementById('username').value;
-//     var password = document.getElementById('password').value;
-//     // Add more fields as needed
-
-//     // Perform registration logic here
-//     // You can use AJAX to send registration data to your server-side code
-//     // Example:
-//     // var formData = new FormData();
-//     // formData.append('username', username);
-//     // formData.append('password', password);
-//     // Perform AJAX request to your server to handle registration
-
-//     // After successful registration, you can redirect the user to the login page or any other page
-//     window.location.href = 'index.html'; // Redirect to the login page
-// });
-
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import {
   getAuth,
   createUserWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
-//import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-//import {} from "https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -50,24 +24,32 @@ document
     event.preventDefault();
 
     const email = document.getElementById("Email").value;
-    const Firstname = document.getElementById("Firstname").value;
-    const Lastname = document.getElementById("Lastname").value;
     const password = document.getElementById("password").value;
-    //console.log(email)
     const auth = getAuth();
+
+    // Check if the email contains "nwmissouri.edu"
+    if (!email.includes("nwmissouri.edu")) {
+      alert("Please sign in/sign up with your Organization mail");
+      return;  // Exit the function if the email is not valid
+    }
+
+    // Additional validation to ensure email follows expected pattern
+    if (!/^[sS]\d{6}@nwmissouri\.edu$/.test(email) && !/^[a-zA-Z]+@nwmissouri\.edu$/.test(email)) {
+      alert("Please sign in/sign up with a valid student or instructor email.");
+      return;  // Exit the function if the email does not match any expected pattern
+    }
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
-        alert("Creating Account...");
-        // After successful registration, you can redirect the user to the login page or any other page
-        window.location.href = "index.html"; // Redirect to the login page
-        // ...
+        alert("Account created successfully. Redirecting to login...");
+        // After successful registration, redirect to the login page
+        window.location.href = "index.html";  // Redirect to the login page
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         alert(errorMessage);
-        // ..
       });
   });
