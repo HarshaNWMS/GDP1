@@ -17,6 +17,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+// const db = getDatabase();
+// const reference = ref(db, 'SRN/' + SRNId);
 
 document
   .getElementById("loginForm")
