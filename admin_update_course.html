@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Update Course</title>
+    <link rel="stylesheet" href="admin_update_course.css">
+    <script type="module" src="admin_update_course.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="header">Admin Update Course</h1>
+        <table id="courseTable">
+            <thead>
+                <tr>
+                    <th>CRN</th>
+                    <th>Subject</th>
+                    <th>Course</th>
+                    <th>Section</th>
+                    <th>Credits</th>
+                    <th>Title</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Course rows will be populated here -->
+            </tbody>
+        </table>
+        
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="document.getElementById('popup').style.display='none'">&times;</span>
+                <p id="popupMessage"></p>
+            </div>
+        </div>
+
+        <div id="confirmPopup" class="confirm-popup">
+            <div class="confirm-popup-content">
+                <span class="close" onclick="document.getElementById('confirmPopup').style.display='none'">&times;</span>
+                <p id="confirmPopupMessage"></p>
+                <button id="confirmYes" onclick="confirmDelete()">Yes</button>
+                <button onclick="document.getElementById('confirmPopup').style.display='none'">No</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,6 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set } from "firebase/database";
-
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
@@ -34,6 +33,29 @@ document.querySelector(".course-form").addEventListener("submit", function(event
     const active = 0; // Starting active students
     const remaining = capacity - active; // Calculate remaining seats
     const date = document.getElementById("date").value; // Add this line
+
+
+    //hardocoded data
+    // set(ref(db, 'courses/testCRN'), {
+    //     crn: "testCRN",
+    //     subject: "Test Subject",
+    //     course: "Test Course",
+    //     section: "001",
+    //     credits: 3,
+    //     title: "Test Title",
+    //     days: "M,W,F",
+    //     time: "10:00 AM - 11:00 AM",
+    //     instructor: "Test Instructor",
+    //     capacity: 30,
+    //     active: 0,
+    //     remaining: 30,
+    //     date: "2024-01-01"
+    // }).then(() => {
+    //     console.log("Test course added successfully!");
+    // }).catch((error) => {
+    //     console.error("Error writing to database:", error);
+    // });
+    
 
     // Write the new course to the database
     set(ref(db, 'courses/' + crn), {

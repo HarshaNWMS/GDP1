@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #e0f7fa, #ffffff);
+    margin: 0;
+    padding: 40px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+}
+
+.header {
+    text-align: center;
+    color: #00796b;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #cfd8dc;
+}
+
+th {
+    background-color: #00796b;
+    color: white;
+}
+
+td {
+    background-color: #f1f8e9;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #00796b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px; /* Add margin for spacing */
+}
+
+button:last-child {
+    margin-right: 0; /* Remove margin from the last button */
+}
+
+button:hover {
+    background-color: #004d40;
+}
+
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    overflow: auto; /* Enable scroll if needed */
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
