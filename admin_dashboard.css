@@ -1,3 +1,4 @@
+/* General body styling */
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to right, #e0f7fa, #ffffff);
@@ -5,102 +6,80 @@ body {
     padding: 40px;
 }
 
-.container {
-    max-width: 800px;
+/* Container for the dashboard */
+.dashboard-container {
+    max-width: 600px;
     margin: auto;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    background: #ffffff;
+    background-color: #ffffff;
 }
 
+/* Header styling */
 .header {
     text-align: center;
     color: #00796b;
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: 40px;
+    font-size: 28px;
+    font-weight: bold;
 }
 
-.course-form {
+/* Container for options */
+.options-container {
     display: flex;
     flex-direction: column;
+    gap: 20px; /* Adds space between buttons */
+    align-items: center;
 }
 
-.form-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    flex: 1;
-    margin-right: 10px;
-    background-color: #f1f8e9;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.form-group:last-child {
-    margin-right: 0; /* No margin for the last element in a row */
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #455a64;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cfd8dc;
-    border-radius: 5px;
-    transition: border-color 0.3s;
-}
-
-.form-group input:focus {
-    border-color: #00796b;
-    outline: none;
-}
-
-.submit-btn {
-    padding: 12px;
+/* Button styling for options */
+.option-btn {
+    padding: 15px 30px;
     background-color: #00796b;
     color: white;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
     transition: background-color 0.3s;
+    cursor: pointer;
+    display: inline-block;
+    width: 200px; /* Ensures uniform width */
 }
 
-.submit-btn:hover {
+/* Hover effect for buttons */
+.option-btn:hover {
     background-color: #004d40;
 }
 
+/* Popup styling */
 .popup {
     display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
+    position: fixed;
     z-index: 1000; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
+/* Popup content styling */
 .popup-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 300px; /* Could be more or less, depending on screen size */
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    text-align: center;
 }
 
+/* Close button styling */
 .close {
     color: #aaa;
     float: right;
