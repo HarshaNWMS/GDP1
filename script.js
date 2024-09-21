@@ -40,6 +40,9 @@ document
         } else if (/^[a-zA-Z]+@nwmissouri\.edu$/.test(email)) {
           // Instructor email pattern (name@nwmissouri.edu)
           window.location.href = "instructor_dashboard.html";
+        } else if (/^[a-zA-Z]+@nwmissouri\.edu$/.test(email)) {
+          // Instructor email pattern (name@nwmissouri.edu)
+          window.location.href = "admin_dashboard.html";
         } else {
           alert("Unauthorized access. Please use a valid student or instructor email.");
         }
@@ -51,10 +54,10 @@ document
   });
 
 document
-  .getElementById("instructorLogin")
+  .getElementById("adminLogin")
   .addEventListener("click", function (event) {
     event.preventDefault();
-    document.getElementById("username").value = "instructor@nwmissouri.edu";
+    document.getElementById("username").value = "admin@nwmissouri.edu";
     document.getElementById("password").value = "123456";
   });
 
