@@ -34,15 +34,15 @@ document
         const user = userCredential.user;
 
         // Redirect logic based on the user's email pattern
-        if (/^[sS]\d{6}@nwmissouri\.edu$/.test(email)) {
+        if (email == "admin@nwmissouri.edu" && password == "123456") {
+          // Instructor email pattern (name@nwmissouri.edu)
+          window.location.href = "admin_dashboard.html";
+        }else if (/^[sS]\d{6}@nwmissouri\.edu$/.test(email)) {
           // Student email pattern (S followed by 6 digits)
           window.location.href = "student_dashboard.html";
         } else if (/^[a-zA-Z]+@nwmissouri\.edu$/.test(email)) {
           // Instructor email pattern (name@nwmissouri.edu)
           window.location.href = "instructor_dashboard.html";
-        } else if (/^[a-zA-Z]+@nwmissouri\.edu$/.test(email)) {
-          // Instructor email pattern (name@nwmissouri.edu)
-          window.location.href = "admin_dashboard.html";
         } else {
           alert("Unauthorized access. Please use a valid student or instructor email.");
         }
