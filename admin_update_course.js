@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
     authDomain: "qrcodescanner-150cc.firebaseapp.com",
@@ -15,7 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-let courseToDelete = null; // Variable to store the course to be deleted
+let courseToDelete = null;  // Store the course to be deleted
 
 // Function to load courses from Firebase
 function loadCourses() {
@@ -32,9 +33,14 @@ function loadCourses() {
                 <td>${course.section}</td>
                 <td>${course.credits}</td>
                 <td>${course.title}</td>
+                <td>${course.days}</td>
+                <td>${course.time}</td>
+                <td>${course.instructor}</td>
+                <td>${course.capacity}</td>
+                <td>${course.date}</td>
                 <td>
-                    <button onclick="updateCourse('${childSnapshot.key}')">Update</button>
-                    <button onclick="deleteCourse('${childSnapshot.key}', '${course.crn}')">Delete</button>
+                    <button onclick="confirmDelete('${childSnapshot.key}', '${course.crn}')">Delete</button>
+                    <button onclick="redirectToUpdatePage('${childSnapshot.key}')">Update</button>
                 </td>
             `;
             courseTableBody.appendChild(row);
@@ -42,22 +48,27 @@ function loadCourses() {
     });
 }
 
-// Function to delete a course
-function deleteCourse(crn, courseCRN) {
-    courseToDelete = crn; // Store the CRN of the course to delete
-    document.getElementById('confirmPopup').style.display = 'block'; // Show the confirmation popup
-    document.getElementById('confirmPopupMessage').innerText = `Are you sure you want to delete the course with CRN: ${courseCRN}?`; // Show course CRN
+// Function to confirm delete operation
+function confirmDelete(crn, courseCRN) {
+    courseToDelete = crn; // Store the course CRN to delete
+    const confirmPopup = document.getElementById('confirmPopup');
+    const confirmPopupMessage = document.getElementById('confirmPopupMessage');
+    
+    confirmPopupMessage.innerText = `Are you sure you want to delete the course with CRN: ${courseCRN}?`;
+    confirmPopup.style.display = 'block'; // Show confirmation popup
+
+    // Attach a click event to the Yes button to proceed with deletion
+    document.getElementById('confirmYes').onclick = () => deleteCourse(courseToDelete);
 }
 
-// Function to confirm deletion
-function confirmDelete() {
-    if (courseToDelete) {
-        remove(ref(db, 'courses/' + courseToDelete))
+// Function to delete the course
+function deleteCourse(crn) {
+    if (crn) {
+        remove(ref(db, 'courses/' + crn))
             .then(() => {
                 showPopup('Course deleted successfully!');
                 loadCourses(); // Reload courses to update the table
-                courseToDelete = null; // Reset the variable
-                document.getElementById('confirmPopup').style.display = 'none'; // Hide the confirmation popup
+                document.getElementById('confirmPopup').style.display = 'none'; // Hide confirmation popup
             })
             .catch((error) => {
                 console.error("Error deleting course: ", error);
@@ -65,11 +76,27 @@ function confirmDelete() {
     }
 }
 
-// Function to show popup
-function showPopup(message) {
-    document.getElementById('popup').style.display = 'block';
-    document.getElementById('popupMessage').innerText = message;
+// Function to redirect to update page
+function redirectToUpdatePage(crn) {
+    window.location.href = `update_course.html?key=${crn}`; // Use 'key' in the URL
 }
+
+// Function to show popup messages
+function showPopup(message) {
+    const popup = document.getElementById('popup');
+    const popupMessage = document.getElementById('popupMessage');
+    
+    popupMessage.innerText = message;
+    popup.style.display = 'block';
+    
+    setTimeout(() => {
+        popup.style.display = 'none'; // Hide after 3 seconds
+    }, 3000); // Hide popup after 3 seconds
+}
+
+// Expose the confirmDelete function globally
+window.confirmDelete = confirmDelete;
+window.redirectToUpdatePage = redirectToUpdatePage;
 
 // Load courses on page load
 loadCourses();
