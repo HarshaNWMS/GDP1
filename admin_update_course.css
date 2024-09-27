@@ -182,3 +182,26 @@ td:last-child {
         font-size: 18px;
     }
 }
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: #0415ff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #08b5cc;
+}
+
+.back-btn .arrow {
+    font-size: 18px;
+    margin-right: 10px; /* Space between arrow and 'Home' text */
+}
