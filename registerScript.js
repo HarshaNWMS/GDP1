@@ -1,10 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-} from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
-// Your web app's Firebase configuration
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
   authDomain: "qrcodescanner-150cc.firebaseapp.com",
@@ -17,39 +15,43 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getDatabase();
 
-document
-  .getElementById("registrationForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
+// Handle registration form submission
+document.getElementById("registrationForm").addEventListener("submit", function (event) {
+  event.preventDefault();
 
-    const email = document.getElementById("Email").value;
-    const password = document.getElementById("password").value;
-    const auth = getAuth();
+  const firstName = document.getElementById("Firstname").value;
+  const lastName = document.getElementById("Lastname").value;
+  const email = document.getElementById("Email").value;
+  const password = document.getElementById("password").value;
 
-    // Check if the email contains "nwmissouri.edu"
-    if (!email.includes("nwmissouri.edu")) {
-      alert("Please sign in/sign up with your Organization mail");
-      return;  // Exit the function if the email is not valid
-    }
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // User signed up successfully
+      const user = userCredential.user;
+      const uid = user.uid;
 
-    // Additional validation to ensure email follows expected pattern
-    if (!/^[sS]\d{6}@nwmissouri\.edu$/.test(email) && !/^[a-zA-Z]+@nwmissouri\.edu$/.test(email)) {
-      alert("Please sign in/sign up with a valid student or instructor email.");
-      return;  // Exit the function if the email does not match any expected pattern
-    }
+      // Define the role based on email
+      let role = /^[sS]\d{6}@nwmissouri\.edu$/.test(email) ? "student" : "instructor";
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        alert("Account created successfully. Redirecting to login...");
-        // After successful registration, redirect to the login page
-        window.location.href = "index.html";  // Redirect to the login page
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorMessage);
+      // Write user data to Realtime Database under 'users' collection
+      set(ref(db, 'users/' + uid), {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        role: role
+      }).then(() => {
+        alert("User registered successfully and added to Realtime Database!");
+        // Redirect to login page
+        window.location.href = "index.html";
+      }).catch((error) => {
+        console.error("Error adding user to Realtime Database:", error);
       });
-  });
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      alert(errorMessage);
+    });
+});
