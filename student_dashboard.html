@@ -4,21 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboardStyle.css">
+    <script type="module" src="studentScript.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h2>Welcome Student!</h2>
-        <button onclick="scanQR()">Scan QR</button>
-        <button>View Attendance</button>
-        <button onclick="logout()">Logout</button>
-    </div>
-    <script src="studentScript.js"></script>
-    <script>
-        function logout() {
-            // Implement logout logic here
-            window.location.href = 'index.html';
-        }
-    </script>
+    <h1>Welcome, Student</h1>
+    
+    <h2>Available Courses</h2>
+    <ul id="availableCourses"></ul>
+
+    <h2>Your Enrolled Courses</h2>
+    <ul id="enrolledCourses"></ul>
+
+    <button onclick="scanQR()">Scan QR Code</button>
+    <button onclick="logout()">Logout</button>
 </body>
 </html>

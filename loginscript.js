@@ -31,7 +31,13 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
       const user = userCredential.user;
       const uid = user.uid;
 
-      // Fetch user info from the Realtime Database
+      // Check if user is admin by email
+      if (email === 'admin@nwmissouri.edu') {
+        window.location.href = "admin_dashboard.html";  // Redirect to Admin Dashboard
+        return; // Exit the function for admin login
+      }
+
+      // Fetch user info from the Realtime Database for non-admin users
       const userRef = ref(db, 'users/' + uid);
       get(userRef).then((snapshot) => {
         if (snapshot.exists()) {
@@ -57,4 +63,11 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
       const errorMessage = error.message;
       alert(errorMessage);
     });
+});
+
+// Pre-fill admin login credentials
+document.getElementById("adminLogin").addEventListener("click", function (event) {
+  event.preventDefault();
+  document.getElementById("username").value = "admin@nwmissouri.edu";
+  document.getElementById("password").value = "123456";
 });
