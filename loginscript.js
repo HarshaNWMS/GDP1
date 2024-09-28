@@ -1,13 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-} from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -23,7 +16,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
-const db = getFirestore();
+const db = getDatabase();
 
 // Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", function (event) {
@@ -38,29 +31,26 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
       const user = userCredential.user;
       const uid = user.uid;
 
-      // Fetch the user document from Firestore using UID
-      const userDocRef = doc(db, "users", uid);
-
-      getDoc(userDocRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          const userData = docSnap.data();
+      // Fetch user info from the Realtime Database
+      const userRef = ref(db, 'users/' + uid);
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
           console.log("User data:", userData);
 
-          // Redirect based on the role in Firestore
+          // Redirect based on user role
           if (userData.role === 'student') {
             window.location.href = "student_dashboard.html";  // Redirect to Student Dashboard
           } else if (userData.role === 'instructor') {
             window.location.href = "instructor_dashboard.html";  // Redirect to Instructor Dashboard
           } else {
-            alert("Role not recognized. Please contact the administrator.");
+            alert("User role not recognized.");
           }
         } else {
-          console.log("No such user data found in Firestore!");
-          alert("User data not found.");
+          alert("No user data found!");
         }
       }).catch((error) => {
         console.error("Error fetching user data:", error);
-        alert("Error fetching user data.");
       });
     })
     .catch((error) => {
@@ -68,14 +58,3 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
       alert(errorMessage);
     });
 });
-
-// For admin login
-document.getElementById("adminLogin").addEventListener("click", function (event) {
-  event.preventDefault();
-  document.getElementById("username").value = "admin@nwmissouri.edu";
-  document.getElementById("password").value = "123456";
-});
-
-function logout() {
-  window.location.href = "index.html";
-}
