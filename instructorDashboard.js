@@ -32,43 +32,50 @@ auth.onAuthStateChanged((user) => {
       for (const courseId in courses) {
         const course = courses[courseId];
 
-        if (course.instructor === uid) {
+        // Check if the course is assigned to the logged-in instructor
+        if (course.instructorId === uid) {
           const listItem = document.createElement('li');
-          listItem.textContent = `${course.title} - ${course.section}`;
+          listItem.textContent = `${course.title} - Section ${course.section}`;
+
+          // Add "Course Overview" button
+          const overviewButton = document.createElement('button');
+          overviewButton.textContent = 'Course Overview';
+          overviewButton.onclick = () => viewCourseOverview(courseId);
+          listItem.appendChild(overviewButton);
+
           coursesList.appendChild(listItem);
-        }
-      }
-    });
 
-    // Fetch student enrollment requests
-    const requestsList = document.getElementById('requestsList');
-    get(coursesRef).then((snapshot) => {
-      const courses = snapshot.val();
+          // Check if there are pending enrollment requests
+          if (course.pendingRequests) {
+            const pendingRequests = course.pendingRequests;
+            for (const studentId in pendingRequests) {
+              const studentRef = ref(db, 'users/' + studentId);
+              get(studentRef).then((studentSnapshot) => {
+                const student = studentSnapshot.val();
+                const requestItem = document.createElement('li');
+                requestItem.textContent = `${student.firstName} ${student.lastName} requested enrollment for ${course.title}`;
 
-      for (const courseId in courses) {
-        const course = courses[courseId];
+                // Approve button
+                const approveButton = document.createElement('button');
+                approveButton.textContent = 'Approve';
+                approveButton.onclick = () => approveEnrollment(courseId, studentId);
+                requestItem.appendChild(approveButton);
 
-        if (course.instructor === uid && course.pendingRequests) {
-          for (const studentId in course.pendingRequests) {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Student ID: ${studentId} requested enrollment for ${course.title}`;
+                // Reject button
+                const rejectButton = document.createElement('button');
+                rejectButton.textContent = 'Reject';
+                rejectButton.onclick = () => rejectEnrollment(courseId, studentId);
+                requestItem.appendChild(rejectButton);
 
-            // Approve button
-            const approveButton = document.createElement('button');
-            approveButton.textContent = 'Approve';
-            approveButton.onclick = () => approveEnrollment(courseId, studentId);
-            listItem.appendChild(approveButton);
-
-            // Reject button
-            const rejectButton = document.createElement('button');
-            rejectButton.textContent = 'Reject';
-            rejectButton.onclick = () => rejectEnrollment(courseId, studentId);
-            listItem.appendChild(rejectButton);
-
-            requestsList.appendChild(listItem);
+                // Append request item to the requests list
+                document.getElementById('requestsList').appendChild(requestItem);
+              });
+            }
           }
         }
       }
+    }).catch((error) => {
+      console.error("Error fetching courses:", error);
     });
   }
 });
@@ -83,9 +90,10 @@ function approveEnrollment(courseId, studentId) {
 
     update(courseRef, {
       enrolledStudents: updatedEnrolledStudents,
-      [`pendingRequests/${studentId}`]: null
+      [`pendingRequests/${studentId}`]: null // Remove the student from pending requests
     }).then(() => {
       alert("Enrollment approved!");
+      window.location.reload(); // Refresh the page to update the requests list
     }).catch((error) => {
       console.error("Error approving enrollment:", error);
     });
@@ -97,18 +105,22 @@ function rejectEnrollment(courseId, studentId) {
   const courseRef = ref(db, 'courses/' + courseId + '/pendingRequests/' + studentId);
   update(courseRef, null).then(() => {
     alert("Enrollment request rejected!");
+    window.location.reload(); // Refresh the page to update the requests list
   }).catch((error) => {
     console.error("Error rejecting enrollment:", error);
   });
 }
 
+// Navigate to course overview page with the courseId as a query param
+function viewCourseOverview(courseId) {
+  window.location.href = `courseOverview.html?courseId=${courseId}`;
+}
+
 // Logout function
-// Add the logout function to the global window object so it can be accessed from the HTML
 window.logout = function() {
-    signOut(auth).then(() => {
-      window.location.href = "index.html";
-    }).catch((error) => {
-      console.error("Error logging out:", error);
-    });
-  };
-  
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  }).catch((error) => {
+    console.error("Error logging out:", error);
+  });
+};

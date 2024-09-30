@@ -6,20 +6,15 @@
     <link rel="stylesheet" href="spine.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <script type="module" src="scrum.js"></script>
 </head>
 <body>
     <div class="wrapper">
         <header>
             <h1>QR Code Generator</h1>
-            <p>Select a course</p>
         </header>
         <div class="form">
-            <select id="courseSelect">
-                <option value="Graduate Directed Project">Graduate Directed Project</option>
-                <option value="Project Management">Project Management</option>
-                <option value="Patterns and Frameworks">Patterns and Frameworks</option>
-                <option value="Database Management">Database Management</option>
-            </select>
+            <p id="courseTitle"></p>
             <div id="js_timer">
                 <div id="timer">00:30</div>        
             </div>
@@ -29,6 +24,5 @@
             <img id="qrImage" src="" alt="qr-code">
         </div>
     </div>
-    <script src="scrum.js"></script>
 </body>
 </html>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin Course Management</title>
-        <link rel="stylesheet" href="admin_add_course.css">
-        <script type="module" src="admin_add_course.js"></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Course Management</title>
+    <link rel="stylesheet" href="admin_add_course.css">
+    <script type="module" src="admin_add_course.js"></script>
+</head>
 <body>
     <div class="container">
         <a href="admin_dashboard.html" class="back-btn"> <span class="arrow">&#8592;</span> Home</a>
@@ -55,8 +55,13 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="instructor">Instructor:</label>
-                    <input type="text" id="instructor" name="instructor" required>
+                    <select id="instructor" name="instructor" required>
+                        <option value="" disabled selected>Select Instructor</option>
+                        <!-- Instructors will be populated here dynamically -->
+                    </select>
                 </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group">
                     <label for="capacity">Capacity:</label>
                     <input type="number" id="capacity" name="capacity" required>
@@ -69,7 +74,7 @@
                 </div>
             </div>
             <div class="form-group">
-               <center> <button type="submit" class="submit-btn">Add Course</button></center>
+                <center> <button type="submit" class="submit-btn">Add Course</button></center>
             </div>
         </form>
     </div>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Overview</title>
+    <link rel="stylesheet" href="courseOverview.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Course Overview</h1>
+
+        <!-- Course details section -->
+        <div class="course-details" id="courseDetails">
+            <h2>Course Title and Section</h2>
+            <p><strong>Instructor:</strong></p>
+            <p><strong>Credits:</strong></p>
+            <p><strong>Capacity:</strong></p>
+            <p><strong>Remaining Seats:</strong></p>
+        </div>
+
+        <!-- Registered students section -->
+        <div class="registered-students">
+            <h3>Registered Students</h3>
+            <ul id="studentList"></ul>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <button id="generateQRBtn">Generate QR Code</button>
+            <button id="backToDashboard">Back to Dashboard</button>
+        </div>
+    </div>
+
+    <script type="module" src="courseOverview.js"></script>
+</body>
+</html>
