@@ -102,12 +102,24 @@ function approveEnrollment(courseId, studentId) {
 
 // Function to reject student enrollment
 function rejectEnrollment(courseId, studentId) {
-  const courseRef = ref(db, 'courses/' + courseId + '/pendingRequests/' + studentId);
-  update(courseRef, null).then(() => {
-    alert("Enrollment request rejected!");
-    window.location.reload(); // Refresh the page to update the requests list
+  const coursePendingRef = ref(db, 'courses/' + courseId + '/pendingRequests');
+
+  get(coursePendingRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      const pendingRequests = snapshot.val();
+
+      // Remove the student's enrollment request from the pendingRequests
+      delete pendingRequests[studentId];
+
+      update(coursePendingRef, pendingRequests).then(() => {
+        alert("Enrollment request rejected!");
+        window.location.reload(); // Refresh the page to update the requests list
+      }).catch((error) => {
+        console.error("Error rejecting enrollment:", error);
+      });
+    }
   }).catch((error) => {
-    console.error("Error rejecting enrollment:", error);
+    console.error("Error fetching pending requests:", error);
   });
 }
 
