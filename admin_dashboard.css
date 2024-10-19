@@ -109,3 +109,19 @@ body {
 .back-btn:hover {
     background-color: #004d40;
 }
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #c62828;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #b71c1c;
+}

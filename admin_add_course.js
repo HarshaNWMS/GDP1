@@ -47,8 +47,9 @@ document.querySelector(".course-form").addEventListener("submit", function(event
     event.preventDefault(); // Prevent the default form submission
 
     // Get form values
+    const term = document.getElementById("term").value;
     const crn = document.getElementById("crn").value;
-    const subject = document.getElementById("subject").value;
+    const department = document.getElementById("department").value;
     const course = document.getElementById("course").value;
     const section = document.getElementById("section").value;
     const credits = document.getElementById("credits").value;
@@ -68,8 +69,9 @@ document.querySelector(".course-form").addEventListener("submit", function(event
     document.getElementById("confirmYes").onclick = function() {
         // Write the new course to the database
         set(ref(db, 'courses/' + crn), {
+            term: term,
             crn: crn,
-            subject: subject,
+            department: department,
             course: course,
             section: section,
             credits: credits,
