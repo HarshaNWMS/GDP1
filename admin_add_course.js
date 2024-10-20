@@ -56,7 +56,7 @@ document.querySelector(".course-form").addEventListener("submit", function(event
     const title = document.getElementById("title").value;
     const days = document.getElementById("days").value;
     const time = document.getElementById("time").value;
-    const instructorId = document.getElementById("instructor").value; // Get selected instructor UID
+    const instructor = document.getElementById("instructor").value; // Get selected instructor UID
     const capacity = document.getElementById("capacity").value;
     const active = 0; // Starting active students
     const remaining = capacity - active; // Calculate remaining seats
@@ -78,7 +78,7 @@ document.querySelector(".course-form").addEventListener("submit", function(event
             title: title,
             days: days,
             time: time,
-            instructorId: instructorId, // Store instructor's UID
+            instructor: instructor, // Store instructor's UID
             capacity: capacity,
             active: active,
             remaining: remaining,

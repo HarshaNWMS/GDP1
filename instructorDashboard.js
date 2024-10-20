@@ -33,7 +33,7 @@ auth.onAuthStateChanged((user) => {
         const course = courses[courseId];
 
         // Check if the course is assigned to the logged-in instructor
-        if (course.instructorId === uid) {
+        if (course.instructor === uid) {
           const listItem = document.createElement('li');
           listItem.textContent = `${course.title} - Section ${course.section}`;
 

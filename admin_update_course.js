@@ -16,35 +16,63 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-let courseToDelete = null;  // Store the course to be deleted
+let courseToDelete = null; // Store the course to be deleted
+
+// Function to load users from Firebase
+function loadUsers(instructorID) {
+    return new Promise((resolve, reject) => {
+        onValue(ref(db, 'users/' + instructorID), (snapshot) => {
+            if (snapshot.exists()) {
+                const instructorData = snapshot.val();
+                const instructorName = instructorData.firstName +" "+instructorData.lastName || 'Unknown Instructor';
+                resolve(instructorName);
+            } else {
+                resolve('Instructor not assigned');
+            }
+        }, (error) => {
+            reject('Error fetching user data: ' + error);
+        });
+    });
+}
 
 // Function to load courses from Firebase
-function loadCourses() {
+async function loadCourses() {
     const courseTableBody = document.querySelector('#courseTable tbody');
-    onValue(ref(db, 'courses/'), (snapshot) => {
+    onValue(ref(db, 'courses/'), async (snapshot) => {
         courseTableBody.innerHTML = ''; // Clear the table
-        snapshot.forEach((childSnapshot) => {
-            const course = childSnapshot.val();
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${course.crn}</td>
-                <td>${course.subject}</td>
-                <td>${course.course}</td>
-                <td>${course.section}</td>
-                <td>${course.credits}</td>
-                <td>${course.title}</td>
-                <td>${course.days}</td>
-                <td>${course.time}</td>
-                <td>${course.instructor}</td>
-                <td>${course.capacity}</td>
-                <td>${course.date}</td>
-                <td>
-                    <button onclick="confirmDelete('${childSnapshot.key}', '${course.crn}')">Delete</button>
-                    <button onclick="redirectToUpdatePage('${childSnapshot.key}')">Update</button>
-                </td>
-            `;
-            courseTableBody.appendChild(row);
-        });
+        for (const childSnapshot of snapshot.val() ? Object.entries(snapshot.val()) : []) {
+            const course = childSnapshot[1];
+            const key = childSnapshot[0];
+
+            try {
+                // Fetch instructor name asynchronously
+                const instructorName = await loadUsers(course.instructor);
+
+                // Create the row with course and instructor data
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${course.term}</td>
+                    <td>${course.crn}</td>
+                    <td>${course.subject}</td>
+                    <td>${course.course}</td>
+                    <td>${course.section}</td>
+                    <td>${course.credits}</td>
+                    <td>${course.title}</td>
+                    <td>${course.days}</td>
+                    <td>${course.time}</td>
+                    <td>${instructorName}</td>
+                    <td>${course.capacity}</td>
+                    <td>${course.date}</td>
+                    <td>
+                        <button onclick="confirmDelete('${key}', '${course.crn}')">Delete</button>
+                        <button onclick="redirectToUpdatePage('${key}')">Update</button>
+                    </td>
+                `;
+                courseTableBody.appendChild(row);
+            } catch (error) {
+                console.error(error);
+            }
+        }
     });
 }
 

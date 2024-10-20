@@ -1,5 +1,7 @@
+
+// Import the Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -26,6 +28,7 @@ function populateFields() {
         onValue(courseRef, (snapshot) => {
             const course = snapshot.val();
             if (course) {
+                document.getElementById('term').value = course.term;
                 document.getElementById('crn').value = course.crn;
                 document.getElementById('subject').value = course.subject;
                 document.getElementById('course').value = course.course;
@@ -37,6 +40,9 @@ function populateFields() {
                 document.getElementById('instructor').value = course.instructor;
                 document.getElementById('capacity').value = course.capacity;
                 document.getElementById('date').value = course.date;
+
+                // Load instructor dropdown with the current instructor selected
+                loadInstructors(course.instructor);
             } else {
                 console.error('Course not found!');
                 alert('Course not found!');
@@ -50,6 +56,31 @@ function populateFields() {
     }
 }
 
+// Function to load instructors and select the current one
+function loadInstructors(currentInstructorId) {
+    const instructorsRef = ref(db, 'users');
+    const instructorSelect = document.getElementById('instructor');
+
+    // Fetch all users and filter by role = "instructor"
+    get(instructorsRef).then((snapshot) => {
+        const users = snapshot.val();
+        for (const userId in users) {
+            const user = users[userId];
+            if (user.role === 'instructor') {
+                const option = document.createElement('option');
+                option.value = userId; // Store the instructor's UID
+                option.textContent = `${user.firstName} ${user.lastName}`;
+                if (userId === currentInstructorId) {
+                    option.selected = true; // Select the current instructor
+                }
+                instructorSelect.appendChild(option);
+            }
+        }
+    }).catch((error) => {
+        console.error("Error fetching instructors: ", error);
+    });
+}
+
 // Call populateFields when the page loads
 window.onload = populateFields;
 
@@ -58,6 +89,7 @@ document.querySelector(".course-form").addEventListener("submit", function(event
     event.preventDefault(); // Prevent the default form submission
 
     const key = new URLSearchParams(window.location.search).get('key');
+    const term = document.getElementById("term").value;
     const crn = document.getElementById("crn").value;
     const subject = document.getElementById("subject").value;
     const course = document.getElementById("course").value;
@@ -74,6 +106,7 @@ document.querySelector(".course-form").addEventListener("submit", function(event
 
     // Update the course in Firebase
     set(ref(db, 'courses/' + key), {
+        term: term,
         crn: crn,
         subject: subject,
         course: course,

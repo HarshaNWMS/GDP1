@@ -1,0 +1,54 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e8f5e9; /* Light green background */
+    color: #1b5e20; /* Dark green text */
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1, h2 {
+    text-align: center;
+    color: #2e7d32; /* Medium green for headers */
+  }
+  
+  #coursesList, #requestsList {
+    list-style-type: none;
+    padding: 0;
+    width: 80%;
+    margin: 20px auto;
+    background-color: #ffffff; /* White background for better readability */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  li {
+    padding: 15px;
+    margin: 10px;
+    border-bottom: 1px solid #c8e6c9; /* Light green border for each list item */
+  }
+  
+  button {
+    background-color: #4caf50; /* Green button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  button:hover {
+    background-color: #388e3c; /* Darker green when hovering */
+  }
+  
+  ul li:last-child {
+    border-bottom: none;
+  }
+  
+  button#logout {
+    display: block;
+    margin: 30px auto;
+    background-color: #2e7d32; /* Slightly different green for logout button */
+  }
+  
