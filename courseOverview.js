@@ -23,53 +23,80 @@ const courseId = queryParams.get('courseId');
 const courseDetailsDiv = document.getElementById('courseDetails');
 const studentList = document.getElementById('studentList');
 
+function loadUsers(instructorID) {
+  return new Promise((resolve, reject) => {
+    get(ref(db, 'users/' + instructorID))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const instructorData = snapshot.val();
+          const instructorName = `${instructorData.firstName} ${instructorData.lastName}` || 'Unknown Instructor';
+          resolve(instructorName);
+        } else {
+          resolve('Instructor not assigned');
+        }
+      })
+      .catch((error) => {
+        reject('Error fetching user data: ' + error);
+      });
+  });
+}
+
 // Fetch course details from the database
 const courseRef = ref(db, 'courses/' + courseId);
-get(courseRef).then((snapshot) => {
+get(courseRef).then(async (snapshot) => {
   if (snapshot.exists()) {
     const course = snapshot.val();
     let studentCount = 0; // Initialize student count to 0
 
-    // Check if there are enrolled students
-    if (course.enrolledStudents) {
-      // Loop through enrolled students and count only those with the role of 'student'
-      course.enrolledStudents.forEach(studentId => {
-        const studentRef = ref(db, 'users/' + studentId);
-        get(studentRef).then((studentSnapshot) => {
-          const student = studentSnapshot.val();
-          if (student && student.role === 'student') {
-            studentCount++;
+    try {
+      // Fetch instructor name asynchronously
+      const instructorName = await loadUsers(course.instructor);
 
-            // Add the student to the registered students list
-            const listItem = document.createElement('li');
-            listItem.textContent = `${student.firstName} ${student.lastName}`;
-            studentList.appendChild(listItem);
+      // Check if there are enrolled students
+      if (course.enrolledStudents) {
+        // Loop through enrolled students and count only those with the role of 'student'
+        for (const studentId of course.enrolledStudents) {
+          const studentRef = ref(db, 'users/' + studentId);
+          const studentSnapshot = await get(studentRef);
+
+          if (studentSnapshot.exists()) {
+            const student = studentSnapshot.val();
+            if (student && student.role === 'student') {
+              studentCount++;
+
+              // Add the student to the registered students list
+              const listItem = document.createElement('li');
+              listItem.textContent = `${student.firstName} ${student.lastName}`;
+              studentList.appendChild(listItem);
+            }
           }
+        }
 
-          // Once all students are processed, calculate remaining seats
-          const remainingSeats = course.capacity - studentCount;
-          courseDetailsDiv.innerHTML = `
-            <h2>${course.title} - Section ${course.section}</h2>
-            <p><strong>Instructor:</strong> ${course.instructor}</p>
-            <p><strong>Credits:</strong> ${course.credits}</p>
-            <p><strong>Capacity:</strong> ${course.capacity}</p>
-            <p><strong>Remaining Seats:</strong> ${remainingSeats}</p>
-          `;
-        });
-      });
-    } else {
-      // No enrolled students, so show full capacity
-      courseDetailsDiv.innerHTML = `
-        <h2>${course.title} - Section ${course.section}</h2>
-        <p><strong>Instructor:</strong> ${course.instructor}</p>
-        <p><strong>Credits:</strong> ${course.credits}</p>
-        <p><strong>Capacity:</strong> ${course.capacity}</p>
-        <p><strong>Remaining Seats:</strong> ${course.capacity}</p>
-      `;
+        // Calculate remaining seats
+        const remainingSeats = course.capacity - studentCount;
+        courseDetailsDiv.innerHTML = `
+          <h2>${course.title} - Section ${course.section}</h2>
+          <p><strong>Instructor:</strong> ${instructorName}</p>
+          <p><strong>Credits:</strong> ${course.credits}</p>
+          <p><strong>Capacity:</strong> ${course.capacity}</p>
+          <p><strong>Remaining Seats:</strong> ${remainingSeats}</p>
+        `;
+      } else {
+        // No enrolled students, so show full capacity
+        courseDetailsDiv.innerHTML = `
+          <h2>${course.title} - Section ${course.section}</h2>
+          <p><strong>Instructor:</strong> ${instructorName}</p>
+          <p><strong>Credits:</strong> ${course.credits}</p>
+          <p><strong>Capacity:</strong> ${course.capacity}</p>
+          <p><strong>Remaining Seats:</strong> ${course.capacity}</p>
+        `;
 
-      const noStudents = document.createElement('li');
-      noStudents.textContent = "No students registered yet.";
-      studentList.appendChild(noStudents);
+        const noStudents = document.createElement('li');
+        noStudents.textContent = "No students registered yet.";
+        studentList.appendChild(noStudents);
+      }
+    } catch (error) {
+      console.error("Error fetching instructor or students: ", error);
     }
   } else {
     courseDetailsDiv.innerHTML = '<h2>Course not found</h2>';

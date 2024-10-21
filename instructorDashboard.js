@@ -23,27 +23,56 @@ auth.onAuthStateChanged((user) => {
   if (user) {
     const uid = user.uid;
 
+    // Get instructor's name
+    const instructorRef = ref(db, 'users/' + uid);
+    get(instructorRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const instructor = snapshot.val();
+        const nameElement = document.getElementById('instructorName');
+        nameElement.textContent = `${instructor.firstName} ${instructor.lastName}`;
+      } else {
+        console.error("Instructor not found in the database");
+      }
+    }).catch((error) => {
+      console.error("Error fetching instructor details:", error);
+    });
     // Fetch courses taught by instructor
     const coursesRef = ref(db, 'courses');
     get(coursesRef).then((snapshot) => {
       const courses = snapshot.val();
-      const coursesList = document.getElementById('coursesList');
+      // const coursesList = document.getElementById('coursesList');
+      const coursesContainer = document.getElementById('coursesContainer');
 
       for (const courseId in courses) {
         const course = courses[courseId];
 
         // Check if the course is assigned to the logged-in instructor
         if (course.instructor === uid) {
-          const listItem = document.createElement('li');
-          listItem.textContent = `${course.title} - Section ${course.section}`;
+          // const listItem = document.createElement('li');
+          // listItem.textContent = `${course.title} <br> Section ${course.section}`;
+          const courseContainer = document.createElement('div');
+          courseContainer.classList.add('course-container');
+
+          // Create course title and section elements
+          const courseTitle = document.createElement('h3');
+          courseTitle.innerHTML = `${course.title}`;
+
+          // Create the section details
+          const sectionDetails = document.createElement('p');
+          sectionDetails.textContent = `section - ${course.section}`;
 
           // Add "Course Overview" button
           const overviewButton = document.createElement('button');
           overviewButton.textContent = 'Course Overview';
           overviewButton.onclick = () => viewCourseOverview(courseId);
-          listItem.appendChild(overviewButton);
 
-          coursesList.appendChild(listItem);
+          courseContainer.appendChild(courseTitle);
+          courseContainer.appendChild(sectionDetails);
+          courseContainer.appendChild(overviewButton);
+
+          // listItem.appendChild(overviewButton);
+          // coursesList.appendChild(listItem);
+          coursesContainer.appendChild(courseContainer);
 
           // Check if there are pending enrollment requests
           if (course.pendingRequests) {

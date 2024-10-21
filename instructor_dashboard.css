@@ -12,7 +12,7 @@ body {
     color: #2e7d32; /* Medium green for headers */
   }
   
-  #coursesList, #requestsList {
+ #requestsList {
     list-style-type: none;
     padding: 0;
     width: 80%;
@@ -49,6 +49,65 @@ body {
   button#logout {
     display: block;
     margin: 30px auto;
-    background-color: #2e7d32; /* Slightly different green for logout button */
+    background-color: #2e7d32;
+  }
+
+/* instructor_dashboard.css */
+
+#coursesContainer {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping of items to the next line */
+    gap: 20px; /* Space between each course container */
+    justify-content: center; /* Center all course containers horizontally */
+  }
+  
+ /* Courses Grid */
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  /* Course Card Styling */
+  .course-container {
+    background-color: #3988e3a0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .course-container h3 {
+    color: black;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  /* Course Container on Hover */
+  .course-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(1, 1, 1, 0.7);
+  }
+  
+  /* Button Styles */
+  .course-container button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .course-container button:hover {
+    background-color: #0056b3;
   }
   
