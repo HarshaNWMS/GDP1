@@ -123,7 +123,7 @@ document.querySelector(".course-form").addEventListener("submit", function(event
     })
     .then(() => {
         // Redirect to admin update page
-        window.location.href = "admin_update_course.html"; // Change this to your actual update page path
+        window.location.href = "../HTML/admin_update_course.html"; // Change this to your actual update page path
     })
     .catch((error) => {
         console.error("Error updating course: ", error);

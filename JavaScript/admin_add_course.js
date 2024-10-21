@@ -88,7 +88,7 @@ document.querySelector(".course-form").addEventListener("submit", function(event
             // Close the popup
             document.getElementById("popup").style.display = "none";
             // Redirect to the admin dashboard
-            window.location.href = 'admin_dashboard.html';
+            window.location.href = '../HTML/admin_dashboard.html';
         })
         .catch((error) => {
             console.error("Error writing to database:", error);
