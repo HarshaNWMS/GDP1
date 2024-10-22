@@ -50,7 +50,7 @@ input[type="email"], input[type="password"] {
 
 button {
   padding: 12px;
-  background-color: rgb(0,103,71)d;
+  background-color: rgb(0,103,71);
   color: white;
   border: none;
   border-radius: 5px;

@@ -6,12 +6,13 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Serve static files
-app.use(express.static(path.join(__dirname, '')));
+app.use('/CSS', express.static(path.join(__dirname, 'CSS')));
+app.use('/JavaScript', express.static(path.join(__dirname, 'JavaScript')));
+app.use('/HTML', express.static(path.join(__dirname, 'HTML')));
 
 // Serve index.html on the root URL
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html/index.html'));
+  res.sendFile(path.join(__dirname, 'HTML', 'index.html'));
 });
 
 // Start the server
