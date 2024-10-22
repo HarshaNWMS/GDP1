@@ -33,7 +33,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
       // Check if user is admin by email
       if (email === 'admin@nwmissouri.edu') {
-        window.location.href = "admin_dashboard.html";  // Redirect to Admin Dashboard
+        window.location.href = "html/admin_dashboard.html";  // Redirect to Admin Dashboard
         return; // Exit the function for admin login
       }
 
@@ -46,9 +46,9 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
           // Redirect based on user role
           if (userData.role === 'student') {
-            window.location.href = "student_dashboard.html";  // Redirect to Student Dashboard
+            window.location.href = "html/student_dashboard.html";  // Redirect to Student Dashboard
           } else if (userData.role === 'instructor') {
-            window.location.href = "instructor_dashboard.html";  // Redirect to Instructor Dashboard
+            window.location.href = "html/instructor_dashboard.html";  // Redirect to Instructor Dashboard
           } else {
             alert("User role not recognized.");
           }
