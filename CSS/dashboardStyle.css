@@ -1,121 +1,187 @@
-/* General Styles */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f0f4f8;
-    margin: 0;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  h1, h2 {
-    color: #333;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  /* Styling the Buttons */
-  button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    margin: 10px 0;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 30px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-  }
-  
-  button:active {
-    background-color: #003f7f;
-    transform: translateY(0);
-  }
-  
-  /* Course List Styling */
-  ul li {
-    margin: 15px 0;
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    background-color: white;
-    padding: 10px 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease;
-  }
-  
-  ul li:hover {
-    transform: translateY(-3px);
-  }
-  
-  ul li button {
-    background-color: #28a745;
-    padding: 8px 15px;
-    font-size: 14px;
-    border-radius: 20px;
-  }
-  
-  ul li button:hover {
-    background-color: #218838;
-  }
-  
-  ul li button:active {
-    background-color: #1e7e34;
-  }
-  
-  /* Adjusting for buttons and text to align well */
-  ul li span {
-    flex: 1;
-    text-align: left;
-    font-size: 16px;
-    color: #333;
-    margin-right: 15px;
-  }
-  
-  /* For the entire container of content */
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    margin-bottom: 20px;
-  }
-  
-  /* Additional button styles */
-  .scan-btn, .logout-btn {
-    display: inline-block;
-    margin-right: 10px;
-    padding: 12px 25px;
-  }
-  
-  .scan-btn {
-    background-color: #007bff;
-  }
-  
-  .logout-btn {
-    background-color: #ff4d4d;
-  }
-  
-  .scan-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .logout-btn:hover {
-    background-color: #cc0000;
-  }
-  
+  font-family: 'Poppins', sans-serif;
+  background-color: #f0f4f8;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Top-right buttons (Scan QR and Logout) */
+.top-right-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.scan-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.scan-btn:hover {
+  background-color: #218838;
+}
+
+.logout-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-btn:hover {
+  background-color: #cc0000;
+}
+
+/* Welcome message */
+.welcome-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#welcomeMessage {
+  font-size: 24px;
+  color: #333;
+}
+
+/* Styling for the Select Term dropdown */
+label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+  font-size: 18px;
+}
+
+#termDropdown {
+  padding: 10px;
+  margin: 20px 0;
+  font-size: 16px;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  background-color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+#termDropdown:hover {
+  border-color: #0056b3;
+}
+
+/* Courses Container: Flex layout for side-by-side display */
+.courses-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+/* Available Courses and Enrolled Courses sections */
+.available-courses-section, .enrolled-courses-section {
+  width: 48%;
+}
+
+/* Smaller table for Available Courses */
+.course-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.course-table th, .course-table td {
+  padding: 8px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.course-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.course-table td {
+  border-bottom: 1px solid #ddd;
+}
+
+.course-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Enroll Button */
+.enroll-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.enroll-btn:hover {
+  background-color: #218838;
+}
+
+/* Disabled (Enrolled) Button Style */
+.disabled-btn {
+  background-color: #d3d3d3;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* Course cards for enrolled courses - Flexbox for side-by-side layout */
+.course-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.course-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 250px;  /* Set width for two cards to be side-by-side */
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+}
+
+.course-card h3 {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.course-card p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.track-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.track-btn:hover {
+  background-color: #0056b3;
+}
