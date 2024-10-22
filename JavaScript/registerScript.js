@@ -45,7 +45,7 @@ document.getElementById("registrationForm").addEventListener("submit", function 
       }).then(() => {
         alert("User registered successfully and added to Realtime Database!");
         // Redirect to login page
-        window.location.href = "../HTML/login.html";
+        window.location.href = "../HTML/index.html";
       }).catch((error) => {
         console.error("Error adding user to Realtime Database:", error);
       });

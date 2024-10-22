@@ -79,7 +79,7 @@ window.scanQR = function() {
 // Logout function
 window.logout = function() {
   signOut(auth).then(() => {
-    window.location.href = "../HTML/login.html";
+    window.location.href = "../HTML/index.html";
   }).catch((error) => {
     console.error("Error logging out:", error);
   });

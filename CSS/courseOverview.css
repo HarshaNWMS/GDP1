@@ -15,7 +15,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: #79c96e;
   border-radius: 16px;
   padding: 60px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
@@ -37,7 +37,7 @@ h1 {
 }
 
 h1:hover {
-  color: #ff7f50;
+  color: #094A25;
 }
 
 .course-details {
@@ -53,7 +53,7 @@ h1:hover {
 }
 
 .course-details h2:hover {
-  color: #ff6347;
+  color: #094A25;
 }
 
 .course-details p {
