@@ -23,7 +23,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #8FD19E ;
+  background-color: #79c96e;
   border-radius: 16px;
   padding: 20px; /* Reduced padding */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
@@ -35,7 +35,7 @@ body {
 
 h1 {
   font-size: 2rem; /* Reduced font size */
-  color: #333;
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 
@@ -47,13 +47,13 @@ h1 {
 .course-details h2 {
   font-size: 1.5rem; /* Reduced font size */
   margin-bottom: 0.8rem;
-  color: #444;
+  color: #ffffff;
 }
 
 .course-details p {
   font-size: 1rem; /* Reduced font size */
   margin: 0.3rem 0;
-  color: #555;
+  color: #ffffff;
 }
 
 .registered-students {

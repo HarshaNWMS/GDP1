@@ -8,7 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
 
     <style>
-        /* Add your CSS styles for QR scanner page */
+        body{
+            background-color: rgb(216, 241, 233);
+        }
         #qr-reader {
             width: 100%;
             max-width: 400px;
@@ -18,13 +20,13 @@
     </style>
 </head>
 <body>
-    
-    
-        <div id="qr-reader" style="width: 600px"></div>
+    <!-- Back to Dashboard Button -->
+    <a href="../HTML/student_dashboard.html" id="backToDashboard">Back to Dashboard</a>
+
+    <!-- QR Scanner Container -->
+    <div id="qr-reader" style="width: 600px"></div>
 
     <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
-
     <script src="../JavaScript/qrScannerScript.js"></script>
-
 </body>
 </html>
