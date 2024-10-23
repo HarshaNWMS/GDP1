@@ -61,9 +61,15 @@ auth.onAuthStateChanged((user) => {
           const termText = document.createElement('p');
           termText.textContent = `Term: ${course.term}`;
 
-          // Append the title and term to the text container
+          // Department
+          const subject = course.subject; // Fetch the 'subject' field
+          const deptText = document.createElement('p');
+          deptText.textContent = `Department: CS-${subject.toUpperCase() || 'N/A'}`; // Format department as 'CS-ACS' or 'CS-IS'
+
+          // Append the title, term, and department to the text container
           courseTextContainer.appendChild(courseTitle);
           courseTextContainer.appendChild(termText);
+          courseTextContainer.appendChild(deptText);
 
           // Add "Course Overview" button
           const overviewButton = document.createElement('button');
