@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #3498db;
+  background-color: rgb(2, 131, 90);
   margin: 0;
   padding: 0;
   display: flex;
@@ -49,7 +49,7 @@ header p {
 }
 
 .form button {
-  background-color: #3498DB;
+  background-color: rgb(2, 131, 90);
   color: #fff;
   cursor: pointer;
   border: none;
@@ -115,4 +115,20 @@ header p {
   .qr-code img {
       width: 160px;
   }
+}
+#backToCourseOverview {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+#backToCourseOverview:hover {
+  background-color: #2980B9;
 }
