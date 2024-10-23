@@ -31,7 +31,7 @@ auth.onAuthStateChanged((user) => {
         document.getElementById('dashboardTitle').textContent = `${studentName}'s Dashboard`;
         
         // Update the welcome message with the student's name
-        document.getElementById('welcomeMessage').textContent = `Welcome, ${studentName}! Select a term to populate your courses.`;
+        document.getElementById('welcomeMessage').textContent = `Welcome, ${studentName}!`;
       }
     });
 

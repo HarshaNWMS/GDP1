@@ -9,15 +9,17 @@
 </head>
 <body>
     <!-- Buttons at the top right corner -->
-    <div class="top-right-buttons">
+    <header class="header-bar"> 
+    <div>
+        <h2 id="welcomeMessage">Welcome! Select a term to populate your courses.</h2>
+    </div><div class="top-right-buttons">
         <button class="scan-btn" onclick="scanQR()">Scan QR Code</button>
         <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
-
+    </header>
     <!-- Welcome message and term selection section -->
     <div class="welcome-section">
-        <h2 id="welcomeMessage">Welcome! Select a term to populate your courses.</h2>
-        <label for="termDropdown">Select Term:</label>
+        <h2>Select a term to populate your courses.</h2>
         <select id="termDropdown">
             <option value="" disabled selected>Select a term</option>
             <option value="Fall 2024">Fall 2024</option>
