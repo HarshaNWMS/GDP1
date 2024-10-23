@@ -1,3 +1,4 @@
+/* General Styling */
 body {
   font-family: 'Poppins', sans-serif;
   background-color: rgb(197, 227, 228);
@@ -9,12 +10,12 @@ body {
 .top-right-buttons {
   position: absolute;
   top: 20px;
-  right: 20px;
+  right: 80px; /* Moved slightly left to avoid overlapping with the paw */
   display: flex;
   gap: 10px;
 }
 
-.scan-btn {
+.scan-btn, .logout-btn {
   background-color: #28a745;
   color: white;
   border: none;
@@ -30,12 +31,6 @@ body {
 
 .logout-btn {
   background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 14px;
 }
 
 .logout-btn:hover {
@@ -139,58 +134,81 @@ label {
   cursor: not-allowed;
 }
 
-/* Course cards for enrolled courses - Flexbox for side-by-side layout */
+/* Course cards for enrolled courses */
 .course-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-}
-
-.course-card {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 25px;
+  justify-content: center;
   padding: 20px;
-  width: 250px;  /* Set width for two cards to be side-by-side */
-  text-align: center;
-  transition: transform 0.2s ease;
 }
 
-.course-card:hover {
+/* Course Card Styling */
+.course-container {
+  background-image: url('../assets/CardBG.jpg'); /* Card background */
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px; /* Smooth rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 250px; /* Reduced width */
+  height: 250px; /* Reduced height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.course-container:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.course-card h3 {
-  margin: 10px 0;
-  font-size: 16px;
-  color: #333;
+/* Text Container Inside Card */
+.course-text-container {
+  background: rgba(0, 103, 71, 0.6); /* Semi-transparent background for text */
+  padding: 10px;
+  color: white;
+  text-align: left;
+  border-radius: 15px 15px 0 0;
 }
 
-.course-card p {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 15px;
+/* Course Title */
+.course-container h3 {
+  font-size: 1.2em;
+  margin-bottom: 5px;
 }
 
-.track-btn {
-  background-color: #007bff;
+/* Term and Department Text */
+.course-container p {
+  font-size: 1em;
+  margin-bottom: 5px;
+}
+
+/* Button Style */
+.course-container button {
+  background-color: rgb(0, 103, 71);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
+  border-radius: 15px;
+  padding: 8px;
   cursor: pointer;
-  font-size: 14px;
+  width: 100%;
+  text-align: center;
+  margin-top: auto;
+  transition: background-color 0.3s;
 }
 
-.track-btn:hover {
-  background-color: #0056b3;
+.course-container button:hover {
+  background-color: #4b88c8;
 }
+
 /* Floating paws in all four corners */
 .paw-container {
   position: fixed;
   width: 50px;
   height: 50px;
-  background-color: rgba(0, 89, 63, 0.7);
+  background-color: rgba(0, 89, 63, 0.7); /* Adjusted for transparency */
   border-radius: 50%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
@@ -201,17 +219,17 @@ label {
 }
 
 .paw-container .paw {
-  font-size: 24px; /* Adjust the size of the paw print */
+  font-size: 24px;
   color: white;
 }
 
 /* Floating animation */
 @keyframes float {
   0%, 100% {
-    transform: translateY(0);
+      transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+      transform: translateY(-10px);
   }
 }
 
