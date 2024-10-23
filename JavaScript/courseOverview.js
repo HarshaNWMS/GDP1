@@ -55,7 +55,7 @@ get(courseRef).then(async (snapshot) => {
       // Check if there are enrolled students
       if (course.enrolledStudents) {
         // Loop through enrolled students and count only those with the role of 'student'
-        for (const studentId of course.enrolledStudents) {
+        for (const studentId of Object.keys(course.enrolledStudents)) {
           const studentRef = ref(db, 'users/' + studentId);
           const studentSnapshot = await get(studentRef);
 
