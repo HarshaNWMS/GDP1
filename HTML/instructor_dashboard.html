@@ -8,15 +8,14 @@
     <script type="module" src="../JavaScript/instructorDashboard.js"></script>
 </head>
 <body>
-    <h1 id="welcomeMessage">Welcome, <span id="instructorName">Instructor</span></h1>
+    <!-- Welcome message -->
+    <h1 id="welcomeMessage">Welcome Professor, <span id="instructorName">Instructor</span></h1>
     
+    <!-- Instructor Courses Section -->
     <h2>Your Courses</h2>
-    <!-- <ul id="coursesList"></ul> -->
-    <div id="coursesContainer"></div>
+    <div id="coursesContainer" class="courses-grid"></div>
 
-    <h2>Student Enrollment Requests</h2>
-    <ul id="requestsList"></ul>
-
-    <button onclick="logout()">Logout</button>
+    <!-- Logout button -->
+    <button id="logout" onclick="logout()">Logout</button>
 </body>
 </html>

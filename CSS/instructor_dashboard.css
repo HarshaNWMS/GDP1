@@ -1,128 +1,97 @@
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #e8f5e9; /* Light green background */
-    color: #1b5e20; /* Dark green text */
+    background-color: #e8f5e9;
+    color: #1b5e20;
     margin: 0;
     padding: 0;
 }
 
 h1, h2 {
     text-align: center;
-    color: #2e7d32; /* Medium green for headers */
+    color: #2e7d32;
 }
 
-#requestsList {
-    list-style-type: none;
-    padding: 0;
-    width: 80%;
-    margin: 20px auto;
-    background-color: #ffffff; /* White background for better readability */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-li {
-    padding: 15px;
-    margin: 10px;
-    border-bottom: 1px solid #c8e6c9; /* Light green border for each list item */
-}
-
-button {
-    background-color: #4caf50; /* Green button */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 15px;
-    cursor: pointer;
-    margin: 5px;
-}
-
-button:hover {
-    background-color: #388e3c; /* Darker green when hovering */
-}
-
-ul li:last-child {
-    border-bottom: none;
-}
-
-button#logout {
-    display: block;
-    margin: 30px auto;
-    background-color: #2e7d32;
-}
-
-/* instructor_dashboard.css */
-
+/* Courses Container */
 #coursesContainer {
     display: flex;
-    flex-wrap: wrap; /* Allows wrapping of items to the next line */
-    gap: 25px; /* Space between each course container */
-    justify-content: center; /* Center all course containers horizontally */
-}
-
-/* Courses Grid */
-.courses-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 300px); /* Always 3 columns per row with fixed width */
+    flex-wrap: wrap;
     gap: 25px;
-    margin-top: 20px;
-    justify-content: center; /* Center the grid */
+    justify-content: center;
+    padding: 20px;
 }
 
 /* Course Card Styling */
 .course-container {
-    background-color: #3988e3a0;
+    background-image: url('../assets/CardBG.png'); /* Card background */
+    background-size: cover;
+    background-position: center;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    height: 350px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    color: white;
+    justify-content: flex-end; /* Pushes content to bottom */
+    position: relative;
     transition: transform 0.3s, box-shadow 0.3s;
-    width: 300px; /* Fixed width for uniformity */
-    height: 180px; /* Reduced height for uniformity */
 }
 
-.course-container h3 {
-    color: #ffffff;
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    text-align: center;
-    word-wrap: break-word; /* Handle long titles */
-}
-
-.course-container p {
-    text-align: center;
-    font-size: 1.1em;
-    margin-top: 10px;
-}
-
-/* Center the section text */
-.course-container p.section-text {
-    margin-top: auto;
-    text-align: center;
-    color: #ffffff;
-}
-
-/* Course Container on Hover */
 .course-container:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(1, 1, 1, 0.7);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Button Styles */
-.course-container button {
-    margin-top: auto;
+/* Text Container Inside Card */
+.course-text-container {
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for text */
     padding: 10px;
+    color: white;
+    text-align: left;
+}
+
+/* Course Title */
+.course-container h3 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+/* Term Text */
+.course-container p {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+/* Button Style */
+.course-container button {
     background-color: #5da9f0;
     color: white;
     border: none;
     border-radius: 5px;
+    padding: 10px;
     cursor: pointer;
+    width: 100%;
+    text-align: center;
+    margin-top: auto;
     transition: background-color 0.3s;
 }
 
 .course-container button:hover {
     background-color: #4b88c8;
+}
+
+/* Logout Button */
+#logout {
+    display: block;
+    margin: 30px auto;
+    background-color: #2e7d32;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logout:hover {
+    background-color: #1e5b2b;
 }
