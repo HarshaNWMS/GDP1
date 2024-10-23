@@ -9,14 +9,17 @@
 </head>
 <body>
     <!-- Welcome message -->
-    <h1 id="welcomeMessage">Welcome Professor, <span id="instructorName">Instructor</span></h1>
-    
+    <!-- <h1 id="welcomeMessage">Welcome Professor, <span id="instructorName">Instructor</span></h1> -->
+    <header class="header-bar">
+      <h1 id="welcomeMessage">Welcome Professor, <span id="instructorName">Instructor</span></h1>
+      <button id="logout" class="logout-btn" onclick="logout()">Logout</button>
+    </header>
     <!-- Instructor Courses Section -->
     <h2>Your Courses</h2>
     <div id="coursesContainer" class="courses-grid"></div>
 
     <!-- Logout button -->
-    <button id="logout" onclick="logout()">Logout</button>
+    <!-- <button id="logout" onclick="logout()">Logout</button> -->
 
     <div class="paw-container paw-top-left">
         <div class="paw">🐾</div>

@@ -23,7 +23,8 @@ body::before {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  opacity: 0.8; /* Adjust the opacity to your preference */
+  opacity: 0.7; /* Adjust the opacity to your preference */
+  filter: blur(1px);
   z-index: -1; /* Ensure it stays behind other content */
 }
 
