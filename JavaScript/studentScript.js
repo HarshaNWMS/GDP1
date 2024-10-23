@@ -107,8 +107,6 @@ const loadAvailableCourses = (enrolledCourses, selectedTerm) => {
 // Display enrolled courses as cards based on the selected term
 function displayEnrolledCourses(enrolledCourses, selectedTerm) {
   const enrolledCoursesDiv = document.getElementById('enrolledCourses');
-
-  // Clear only if not previously added
   enrolledCoursesDiv.innerHTML = ''; 
 
   const coursesRef = ref(db, 'courses');
@@ -118,29 +116,33 @@ function displayEnrolledCourses(enrolledCourses, selectedTerm) {
     for (const courseId in enrolledCourses) {
       const course = courses[courseId];
       if (course.term.trim().toLowerCase() === selectedTerm) {
-        // Check if course is already displayed (no duplicates)
-        if (!document.getElementById(`course-card-${courseId}`)) {
-          // Create card for enrolled course
-          const card = document.createElement('div');
-          card.classList.add('course-card');
-          card.id = `course-card-${courseId}`; // Unique ID for each card
+        const card = document.createElement('div');
+        card.classList.add('course-container'); // Reuse the same class from the instructor dashboard
+        card.id = `course-card-${courseId}`; 
 
-          const courseTitle = document.createElement('h3');
-          courseTitle.textContent = `${course.title} - ${course.section}`;
-          card.appendChild(courseTitle);
+        const courseTextContainer = document.createElement('div');
+        courseTextContainer.classList.add('course-text-container');
 
-          const daysLabel = document.createElement('p');
-          daysLabel.textContent = `Days: ${course.days}`;
-          card.appendChild(daysLabel);
+        const courseTitle = document.createElement('h3');
+        courseTitle.textContent = `${course.title} - ${course.section}`;
+        courseTextContainer.appendChild(courseTitle);
 
-          const trackButton = document.createElement('button');
-          trackButton.textContent = 'Track Attendance';
-          trackButton.classList.add('track-btn');
-          trackButton.onclick = () => trackAttendance(courseId);
-          card.appendChild(trackButton);
+        const termLabel = document.createElement('p');
+        termLabel.textContent = `Term: ${course.term}`;
+        courseTextContainer.appendChild(termLabel);
 
-          enrolledCoursesDiv.appendChild(card);
-        }
+        const deptLabel = document.createElement('p');
+        deptLabel.textContent = `Department: CS-${course.subject}`;
+        courseTextContainer.appendChild(deptLabel);
+
+        const trackButton = document.createElement('button');
+        trackButton.textContent = 'Track Attendance';
+        trackButton.classList.add('track-btn');
+        trackButton.onclick = () => trackAttendance(course.title);
+        card.appendChild(courseTextContainer);
+        card.appendChild(trackButton);
+
+        enrolledCoursesDiv.appendChild(card);
       }
     }
   }).catch((error) => {
@@ -165,9 +167,10 @@ function enrollInCourse(courseId, uid) {
   });
 }
 
-// Dummy function for tracking attendance
-function trackAttendance(courseId) {
-  alert(`Tracking attendance for course ID: ${courseId}`);
+// Function to track attendance
+function trackAttendance(courseTitle) {
+  alert(`Tracking attendance for: ${courseTitle}`);
+  window.location.href = '../HTML/pieChart.html'; // Redirect to the new pie chart page
 }
 
 // Logout function
