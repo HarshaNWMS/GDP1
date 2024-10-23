@@ -1,6 +1,6 @@
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f0f4f8;
+  background-color: rgb(197, 227, 228);
   margin: 0;
   padding: 20px;
 }
@@ -184,4 +184,59 @@ label {
 
 .track-btn:hover {
   background-color: #0056b3;
+}
+/* Floating paws in all four corners */
+.paw-container {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 89, 63, 0.7);
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float 3s ease-in-out infinite;
+}
+
+.paw-container .paw {
+  font-size: 24px; /* Adjust the size of the paw print */
+  color: white;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Positioning the paws in all four corners */
+.paw-top-left {
+  top: 10px;
+  left: 10px;
+}
+
+.paw-top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.paw-bottom-left {
+  bottom: 10px;
+  left: 10px;
+}
+
+.paw-bottom-right {
+  bottom: 10px;
+  right: 10px;
+}
+
+.paw-container:hover {
+  animation-play-state: paused;
+  background-color: #00492d; /* Darker green on hover */
 }
