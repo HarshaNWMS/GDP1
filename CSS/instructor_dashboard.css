@@ -25,7 +25,7 @@
     position: absolute;
     top: 20px;
     right: 70px; /* Adjust to make sure it's not too close to the paw */
-    background-color: #c62828;
+    background-color: #72a589;
     padding: 10px 20px;
     color: white;
     border: none;
@@ -67,8 +67,8 @@ h1, h2 {
     background-position: center;
     border-radius: 15px; /* Smooth rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 250px; /* Reduced width */
-    height: 250px; /* Reduced height */
+    width: 200px; /* Reduced width */
+    height: 200px; /* Reduced height */
     display: flex;
     flex-direction: column;
     justify-content: flex-end; /* Pushes content to bottom */
@@ -84,7 +84,7 @@ h1, h2 {
 /* Text Container Inside Card */
 .course-text-container {
     background: rgba(0, 103, 71, 0.6); /* Semi-transparent background for text */
-    padding: 10px;
+    padding: 20px;
     color: white;
     text-align: left;
     border-radius: 15px 15px 0 0; /* Rounded edges only at the top */
@@ -107,7 +107,7 @@ h1, h2 {
     background-color: rgb(0,103,71);
     color: white;
     border: none;
-    border-radius: 15px; /* Rounded button */
+    border-radius: 3px; /* Rounded button */
     padding: 8px;
     cursor: pointer;
     width: 100%;
@@ -117,7 +117,7 @@ h1, h2 {
 }
 
 .course-container button:hover {
-    background-color: #4b88c8;
+    background-color: #19191a;
 }
 
 /* Floating paws in all four corners */
