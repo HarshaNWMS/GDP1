@@ -8,8 +8,9 @@ window.onload = function() {
                 labels: ['Present', 'Absent', 'Late'],
                 datasets: [{
                     label: 'Attendance',
-                    data: [12, 2, 5], // Example data
+                    data: [12, 2, 5],  // Example data
                     backgroundColor: ['#4caf50', '#f44336', '#ffeb3b'],
+
                 }]
             },
             options: {
@@ -19,8 +20,9 @@ window.onload = function() {
                     legend: {
                         display: true,
                         position: 'bottom',
+                        
                     },
-                },
+            },
             }
         });
     } else {
