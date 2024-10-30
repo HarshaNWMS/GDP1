@@ -7,7 +7,7 @@
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
     margin-top: 30px;
-    border: 3px solid #388e3c; /* Darker green border */
+    border: 3px solid #388e3c;  /* Darker green border */
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -39,10 +39,12 @@
     display: block;
     margin-top: 10px;
     transition: color 0.3s;
+    
 }
 
 .html5-qrcode-anchor:hover {
     color: #66bb6a;
+
 }
 
 #qr-reader__camera_permission_button, #qr-reader__camera_scan_region {
@@ -52,15 +54,18 @@
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
+
 }
 
 #qr-reader__camera_permission_button:hover {
     background-color: #388e3c;
     color: #ffffff;
+
 }
 
 #qr-reader__dashboard_section {
     padding: 20px;
+
 }
 
 #backToDashboard {
@@ -74,26 +79,31 @@
     text-decoration: none;
     font-size: 16px;
     transition: background-color 0.3s ease;
+
 }
 
 #backToDashboard:hover {
     background-color: #2e7d32;
+
 }
 
 @media (max-width: 768px) {
     #qr-reader {
         max-width: 90%;
         padding: 20px;
+
     }
 
     #qr-reader button {
         font-size: 1rem;
         padding: 10px;
     }
+
 }
 
 @media (min-width: 769px) {
     #qr-reader {
         max-width: 550px;
     }
+
 }
