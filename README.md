@@ -39,7 +39,7 @@ This project utilizes a range of technologies to ensure a seamless and efficient
 - **2.Firebase Configuration**
 - **3.Install Dependencies**
   - 1.npm install express
-----Configure Firebase in Your Project
+  - 2.Configure Firebase in Your Project
     
 ### Running the Project
 - **Start the Development Server**
