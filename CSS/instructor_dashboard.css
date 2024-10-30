@@ -91,23 +91,26 @@ h1, h2 {
 }
 
 /* Course Title */
+
 .course-container h3 {
     font-size: 1.2em;
     margin-bottom: 5px;
 }
 
 /* Term and Department Text */
+
 .course-container p {
     font-size: 1em;
     margin-bottom: 5px;
 }
 
 /* Button Style */
+
 .course-container button {
     background-color: rgb(0,103,71);
     color: white;
     border: none;
-    border-radius: 3px; /* Rounded button */
+    border-radius: 3px;  /* Rounded button */
     padding: 8px;
     cursor: pointer;
     width: 100%;
@@ -121,6 +124,7 @@ h1, h2 {
 }
 
 /* Floating paws in all four corners */
+
 .paw-container {
     position: fixed;
     width: 50px;
@@ -136,11 +140,12 @@ h1, h2 {
 }
 
 .paw-container .paw {
-    font-size: 24px; /* Adjust the size of the paw print */
+    font-size: 24px;  /* Adjust the size of the paw print */
     color: white;
 }
 
 /* Floating animation */
+
 @keyframes float {
     0%, 100% {
         transform: translateY(0);
@@ -151,6 +156,7 @@ h1, h2 {
 }
 
 /* Positioning the paws in all four corners */
+
 .paw-top-left {
     top: 10px;
     left: 10px;
@@ -173,5 +179,5 @@ h1, h2 {
 
 .paw-container:hover {
     animation-play-state: paused;
-    background-color: #00492d; /* Darker green on hover */
+    background-color: #00492d;/* Darker green on hover */
 }
