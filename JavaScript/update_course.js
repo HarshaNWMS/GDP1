@@ -26,6 +26,7 @@ function populateFields() {
     if (key) {
         const courseRef = ref(db, 'courses/' + key);
         onValue(courseRef, (snapshot) => {
+
             const course = snapshot.val();
             if (course) {
                 document.getElementById('term').value = course.term;
@@ -50,6 +51,7 @@ function populateFields() {
         }, {
             onlyOnce: true // Only fetch the data once
         });
+
     } else {
         console.error('No course key provided!');
         alert('No course key provided!');
@@ -75,6 +77,7 @@ function loadInstructors(currentInstructorId) {
                 }
                 instructorSelect.appendChild(option);
             }
+
         }
     }).catch((error) => {
         console.error("Error fetching instructors: ", error);
@@ -128,4 +131,5 @@ document.querySelector(".course-form").addEventListener("submit", function(event
     .catch((error) => {
         console.error("Error updating course: ", error);
     });
+    
 });
