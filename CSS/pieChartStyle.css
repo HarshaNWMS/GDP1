@@ -19,18 +19,19 @@ body {
     height: 450px; /* Limit height to fit the chart and text */
     max-width: 100%;
     position: relative;
+
 }
 
 canvas {
     max-width: 100%;
-    height: 200px; /* Reduced canvas height for better fit */
+    height: 200px;  /* Reduced canvas height for better fit */
 }
 
 h1 {
-    font-size: 1.5rem; /* Smaller font size to fit better */
+    font-size: 1.5rem;  /* Smaller font size to fit better */
     color: #333;
     margin-bottom: 10px;
-    text-align: center; /* Ensures the title stays within the container */
+    text-align: center;  /* Ensures the title stays within the container */
 }
 
 #progressMessage {
@@ -40,6 +41,7 @@ h1 {
 }
 
 /* Button placed outside the container at the top-right corner of the page */
+
 #backToDashboard {
     position: fixed;
     top: 20px;
