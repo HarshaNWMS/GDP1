@@ -27,6 +27,7 @@ This project utilizes a range of technologies to ensure a seamless and efficient
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend/Database**: Firebase
 - **QR Code Generation**: JavaScript QR code library
+- **Other Tools**: postman, GitHub, render, VSCode
 
 
 
