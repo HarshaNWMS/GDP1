@@ -30,17 +30,17 @@ This project utilizes a range of technologies to ensure a seamless and efficient
 - **Other Tools**: postman, GitHub, render, VSCode\
   
 ### Prerequisites
-**Node.js** (for development environment setup)
-**Firebase** account and project setup
+- **Node.js** (for development environment setup)
+- **Firebase** account and project setup
 
 ### Setup Instructions
 
-**1.Clone the Repository**
-**2.Firebase Configuration**
-**3.Install Dependencies**
+- **1.Clone the Repository**
+- **2.Firebase Configuration**
+- **3.Install Dependencies**
 ----npm install
 ----Configure Firebase in Your Project
-**Start the Development Server**
+- **Start the Development Server**
 npm start
 This will run the application on http://localhost:3000.
 
