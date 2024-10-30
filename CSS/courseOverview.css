@@ -1,6 +1,6 @@
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: rgb(197, 227, 228);
+  background-color: #1e5b2b;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,7 +28,7 @@ body {
   padding: 20px; /* Reduced padding */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  max-width: 70%; /* Reduced width */
+  max-width: 30%; /* Reduced width */
   width: 100%;
   position: relative;
 }
@@ -87,7 +87,7 @@ h1 {
 
 
 button {
-  background-color: #5bc0de;
+  background-color: #72a589;
   color: white;
   border: none;
   border-radius: 8px;
