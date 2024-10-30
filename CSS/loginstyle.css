@@ -7,8 +7,9 @@
 }
 
 body {  
-  display: flex;
-  padding: 0 10px;
+  display: grid;
+  
+  place-items: center;
   min-height: 100vh;
   align-items: center;
   background: #00492d;
@@ -16,13 +17,18 @@ body {
 }
 
 .container {
-  width: 100%;
-  max-width: 400px;
+ 
+/* Container Styles */
+
+  width: 100%; /* Take the full width available */
+  max-width: 500px; 
   background-color: white;
-  padding: 30px;
+  padding: 40px;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   z-index: 10; /* Stay above floating paws */
+  margin-top: 80px; /* Add top margin to avoid overlap with the fixed header */
+
 }
 
 h2 {
@@ -125,4 +131,32 @@ button:hover {
 .paw-bottom-right {
   bottom: 20px;
   right: 20px;
+}
+header {
+  background-color: #006747; /* Header background color */
+  color: white; /* Header text color */
+  padding: 20px 0; /* Padding for the header */
+  width: 100%; /* Full width */
+  position: fixed; /* Fixed position at the top */
+  top: 0; /* Align to top */
+  left: 0; /* Align to left */
+  z-index: 100; /* Ensure it is above other elements */
+}
+
+.header-title {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Align items vertically */
+  justify-content: flex-start; /* Align items to the left */
+  padding-left: 20px; /* Padding on the left */
+}
+
+.header-title img {
+  margin-right: 20px; /* Adds space between the logo and the title */
+}
+
+.header-title h1 {
+  margin: 0; /* Remove default h1 margins */
+  font-size: 2em; /* Adjust font size as needed */
+  font-weight: bold;
+  color: white; /* Ensure the text color is white */
 }
