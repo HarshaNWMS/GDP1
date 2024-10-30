@@ -23,7 +23,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #79c96e;
+  background-color: #44976a;
   border-radius: 16px;
   padding: 20px; /* Reduced padding */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
@@ -87,7 +87,7 @@ h1 {
 
 
 button {
-  background-color: #72a589;
+  background-color: #44976a;
   color: white;
   border: none;
   border-radius: 8px;
@@ -98,8 +98,8 @@ button {
 }
 
 button:hover {
-  background-color: #31b0d5;
-  transform: translateY(-4px);
+  background-color: #31d57d;
+  
 }
 
 button:focus {
