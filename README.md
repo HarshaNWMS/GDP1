@@ -38,11 +38,13 @@ This project utilizes a range of technologies to ensure a seamless and efficient
 - **1.Clone the Repository**
 - **2.Firebase Configuration**
 - **3.Install Dependencies**
-----npm install
+  - 1.npm install express
 ----Configure Firebase in Your Project
+    
+### Running the Project
 - **Start the Development Server**
-npm start
-This will run the application on http://localhost:3000.
+- npm start
+- This will run the application on http://localhost:3000.
 
 
 
