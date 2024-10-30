@@ -26,7 +26,7 @@ The Attendance Authentication using QR Code project includes the following key f
 This project utilizes a range of technologies to ensure a seamless and efficient experience:
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend/Database**: Firebase
-- **QR Code Generation**: JavaScript QR code library
+- **QR Code Generation**: JavaScript QR code library - "min.js"
 - **Other Tools**: postman, GitHub, render, VSCode
 
 
