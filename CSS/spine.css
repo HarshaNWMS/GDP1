@@ -93,6 +93,7 @@ header p {
   border-radius: 5px;
   display: inline-block;
   font-size: 18px;
+  
 }
 
 @media (max-width: 430px) {
@@ -116,7 +117,7 @@ header p {
       width: 160px;
   }
 }
-#backToCourseOverview {
+#backToCourseOverview { 
   position: fixed;
   top: 20px;
   left: 20px;
@@ -127,8 +128,10 @@ header p {
   text-decoration: none;
   font-size: 16px;
   transition: background-color 0.3s;
+
 }
 
 #backToCourseOverview:hover {
   background-color: #2980B9;
+
 }
