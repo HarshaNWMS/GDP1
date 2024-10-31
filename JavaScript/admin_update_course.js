@@ -29,13 +29,16 @@ function loadUsers(instructorID) {
             } else {
                 resolve('Instructor not assigned');
             }
+
         }, (error) => {
             reject('Error fetching user data: ' + error);
         });
     });
+
 }
 
 // Function to load courses from Firebase
+
 async function loadCourses() {
     const courseTableBody = document.querySelector('#courseTable tbody');
     onValue(ref(db, 'courses/'), async (snapshot) => {
@@ -45,10 +48,10 @@ async function loadCourses() {
             const key = childSnapshot[0];
 
             try {
-                // Fetch instructor name asynchronously
+                // Fetch instructor name asynchronously.
                 const instructorName = await loadUsers(course.instructor);
 
-                // Create the row with course and instructor data
+                // Create the row with course and instructor data.
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${course.term}</td>
@@ -76,16 +79,16 @@ async function loadCourses() {
     });
 }
 
-// Function to confirm delete operation
+// Function to confirm delete operation.
 function confirmDelete(crn, courseCRN) {
-    courseToDelete = crn; // Store the course CRN to delete
+    courseToDelete = crn; // Store the course CRN to delete.
     const confirmPopup = document.getElementById('confirmPopup');
     const confirmPopupMessage = document.getElementById('confirmPopupMessage');
     
     confirmPopupMessage.innerText = `Are you sure you want to delete the course with CRN: ${courseCRN}?`;
-    confirmPopup.style.display = 'block'; // Show confirmation popup
+    confirmPopup.style.display = 'block'; // Show confirmation popup.
 
-    // Attach a click event to the Yes button to proceed with deletion
+    // Attach a click event to the Yes button to proceed with deletion.
     document.getElementById('confirmYes').onclick = () => deleteCourse(courseToDelete);
 }
 
