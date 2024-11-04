@@ -138,3 +138,41 @@ body {
     font-size: 18px;
     margin-right: 10px; /* Space between arrow and 'Home' text */
 }
+
+#days {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.day-option {
+    position: relative;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.day-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.day-option span {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white; /* Default background color (white) */
+    color: #333; /* Default text color */
+    transition: background-color 0.2s;
+    border: 1px solid #ddd; /* Optional border for visibility */
+}
+
+.day-option input[type="checkbox"]:checked + span {
+    background-color: #90ee90; /* Light green when selected */
+    color: white; /* White text on selection */
+}
+
