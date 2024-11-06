@@ -96,3 +96,10 @@ document.querySelector(".course-form").addEventListener("submit", function(event
         });
     };
 });
+document.addEventListener("DOMContentLoaded", function () {
+    flatpickr("#date", {
+      dateFormat: "MM-DD-YYYY", // Customize date format as needed
+      minDate: "today", // Only allow dates from today onward
+    });
+  });
+  

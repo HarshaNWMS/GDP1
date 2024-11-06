@@ -165,14 +165,51 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: white; /* Default background color (white) */
+    background-color: #90ee90; /* Default background color (white) */
     color: #333; /* Default text color */
     transition: background-color 0.2s;
     border: 1px solid #ddd; /* Optional border for visibility */
 }
 
 .day-option input[type="checkbox"]:checked + span {
-    background-color: #90ee90; /* Light green when selected */
-    color: white; /* White text on selection */
+    background-color: white; /* Light green when selected */
+    color: #90ee90; /* White text on selection */
+}
+
+/* Custom styling for the flatpickr calendar */
+.flatpickr-calendar {
+    background-color: #ffffff;
+    border: 1px solid #00796b;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Header and navigation styling */
+.flatpickr-months .flatpickr-month {
+    color: #00796b;
+    font-weight: bold;
+}
+
+.flatpickr-weekdays span,
+.flatpickr-day {
+    color: #333;
+}
+
+.flatpickr-day.today {
+    background-color: #e0f7fa;
+    border-color: #00796b;
+    color: #00796b;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+    background-color: #00796b;
+    color: white;
+    border-color: #00796b;
+}
+
+.flatpickr-day:hover {
+    background-color: #c3e8e0;
+    color: #333;
 }
 
