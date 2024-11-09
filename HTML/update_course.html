@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Course</title>
     <link rel="stylesheet" href="../CSS/admin_add_course.css">
+    <!-- Link to Flatpickr CSS for date picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script type="module" src="../JavaScript/update_course.js" defer></script>
+    <style>
+        .asterisk {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -13,66 +21,71 @@
         <form class="course-form">
             <div class="form-row">
                 <div class="form-group">
-                    <label for="term">Term:</label>
+                    <label for="term">Term: <span class="asterisk">*</span></label>
                     <input type="text" id="term" name="term" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="crn">CRN:</label>
+                    <label for="crn">CRN: <span class="asterisk">*</span></label>
                     <input type="text" id="crn" name="crn" required>
                 </div>
                 <div class="form-group">
-                    <label for="subject">Subject:</label>
+                    <label for="subject">Subject: <span class="asterisk">*</span></label>
                     <input type="text" id="subject" name="subject" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="course">Course:</label>
+                    <label for="course">Course: <span class="asterisk">*</span></label>
                     <input type="text" id="course" name="course" required>
                 </div>
                 <div class="form-group">
-                    <label for="section">Section:</label>
+                    <label for="section">Section: <span class="asterisk">*</span></label>
                     <input type="text" id="section" name="section" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="credits">Credits:</label>
+                    <label for="credits">Credits: <span class="asterisk">*</span></label>
                     <input type="number" id="credits" name="credits" required>
                 </div>
                 <div class="form-group">
-                    <label for="title">Title:</label>
+                    <label for="title">Title: <span class="asterisk">*</span></label>
                     <input type="text" id="title" name="title" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="days">Days:</label>
-                    <input type="text" id="days" name="days" required>
+                    <label for="days">Days: <span class="asterisk">*</span></label>
+                    <div id="days">
+                        <label class="day-option"><input type="checkbox" name="days" value="M" checked> <span>M</span></label>
+                        <label class="day-option"><input type="checkbox" name="days" value="T" checked> <span>T</span></label>
+                        <label class="day-option"><input type="checkbox" name="days" value="W" checked> <span>W</span></label>
+                        <label class="day-option"><input type="checkbox" name="days" value="Th" checked> <span>Th</span></label>
+                        <label class="day-option"><input type="checkbox" name="days" value="F" checked> <span>F</span></label>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="time">Time:</label>
+                    <label for="time">Time: <span class="asterisk">*</span></label>
                     <input type="text" id="time" name="time" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="instructor">Instructor:</label>
+                    <label for="instructor">Instructor: <span class="asterisk">*</span></label>
                     <select id="instructor" name="instructor" required>
                         <option value="" disabled selected>Select Instructor</option>
-                        <!-- Instructors will be populated here dynamically -->
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="capacity">Capacity:</label>
+                    <label for="capacity">Capacity: <span class="asterisk">*</span></label>
                     <input type="number" id="capacity" name="capacity" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="date">Date:</label>
+                    <label for="date">Date: <span class="asterisk">*</span></label>
                     <input type="text" id="date" name="date" required>
                 </div>
             </div>
@@ -83,11 +96,14 @@
     </div>
 
     <!-- Popup for confirmation -->
-  <div id="popup" class="popup" style="display: none;">
-    <div class="popup-content">
-        <p>Course updated successfully! Click OK to continue.</p>
-        <button id="confirm-button">OK</button>
+    <div id="popup" class="popup" style="display: none;">
+        <div class="popup-content">
+            <p>Course updated successfully! Click OK to continue.</p>
+            <button id="confirm-button">OK</button>
+        </div>
     </div>
-</div>
+
+    <!-- Link to Flatpickr JS for date picker -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 </html>

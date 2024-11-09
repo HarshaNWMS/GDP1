@@ -1,5 +1,4 @@
-
-// Import the Firebase functions
+// Import Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
@@ -18,7 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Function to populate the fields for updating
+// Function to populate fields
 function populateFields() {
     const urlParams = new URLSearchParams(window.location.search);
     const key = urlParams.get('key');
@@ -26,7 +25,6 @@ function populateFields() {
     if (key) {
         const courseRef = ref(db, 'courses/' + key);
         onValue(courseRef, (snapshot) => {
-
             const course = snapshot.val();
             if (course) {
                 document.getElementById('term').value = course.term;
@@ -38,7 +36,6 @@ function populateFields() {
                 document.getElementById('title').value = course.title;
                 document.getElementById('days').value = course.days;
                 document.getElementById('time').value = course.time;
-                document.getElementById('instructor').value = course.instructor;
                 document.getElementById('capacity').value = course.capacity;
                 document.getElementById('date').value = course.date;
 
@@ -48,10 +45,7 @@ function populateFields() {
                 console.error('Course not found!');
                 alert('Course not found!');
             }
-        }, {
-            onlyOnce: true // Only fetch the data once
-        });
-
+        }, { onlyOnce: true });
     } else {
         console.error('No course key provided!');
         alert('No course key provided!');
@@ -63,6 +57,9 @@ function loadInstructors(currentInstructorId) {
     const instructorsRef = ref(db, 'users');
     const instructorSelect = document.getElementById('instructor');
 
+    // Clear existing options first
+    instructorSelect.innerHTML = '<option value="" disabled selected>Select Instructor</option>';
+
     // Fetch all users and filter by role = "instructor"
     get(instructorsRef).then((snapshot) => {
         const users = snapshot.val();
@@ -72,20 +69,28 @@ function loadInstructors(currentInstructorId) {
                 const option = document.createElement('option');
                 option.value = userId; // Store the instructor's UID
                 option.textContent = `${user.firstName} ${user.lastName}`;
+                
+                // Preselect the instructor if it matches the course data
                 if (userId === currentInstructorId) {
-                    option.selected = true; // Select the current instructor
+                    option.selected = true;
                 }
+
                 instructorSelect.appendChild(option);
             }
-
         }
     }).catch((error) => {
         console.error("Error fetching instructors: ", error);
     });
 }
 
-// Call populateFields when the page loads
-window.onload = populateFields;
+// Initialize Flatpickr for date picker and load fields on page load
+document.addEventListener("DOMContentLoaded", function () {
+    flatpickr("#date", {
+        dateFormat: "Y-m-d",
+        minDate: "today"
+    });
+    populateFields(); // Call populateFields on load
+});
 
 // Handle form submission
 document.querySelector(".course-form").addEventListener("submit", function(event) {
@@ -125,11 +130,9 @@ document.querySelector(".course-form").addEventListener("submit", function(event
         date: date
     })
     .then(() => {
-        // Redirect to admin update page
-        window.location.href = "../HTML/admin_update_course.html"; // Change this to your actual update page path
+        window.location.href = "../HTML/admin_update_course.html";
     })
     .catch((error) => {
         console.error("Error updating course: ", error);
     });
-    
 });

@@ -1,3 +1,4 @@
+/* Body Styling */
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to right, #e0f7fa, #ffffff);
@@ -5,6 +6,7 @@ body {
     padding: 40px;
 }
 
+/* Container Styling */
 .container {
     max-width: 600px;
     margin: auto;
@@ -14,67 +16,120 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Header Styling */
 .header {
     text-align: center;
     color: #00796b;
 }
 
+/* Form Row */
 .form-row {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap; /* Allows fields to wrap on smaller screens */
+    gap: 15px; /* Consistent spacing between fields */
     margin-bottom: 15px;
 }
 
+/* Form Group */
 .form-group {
     flex: 1;
-    margin-right: 10px;
+    min-width: 45%; /* Ensures fields have a minimum width */
 }
 
-.form-group:last-child {
-    margin-right: 0;
-}
-
+/* Label Styling */
 label {
     display: block;
+    font-weight: bold;
+    color: #333;
     margin-bottom: 5px;
 }
 
+/* Input and Select Styling */
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease; /* Smooth border transition on focus */
 }
 
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #00796b;
+}
+
+/* Button Styling */
 button {
     margin-top: 10px;
 }
 
-.edit-btn {
-    background-color: #00796b;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.edit-btn:hover {
-    background-color: #004d40;
-}
-
+.edit-btn,
 .submit-btn {
-    width: 100%;
     padding: 10px;
     background-color: #00796b;
     color: white;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover,
+.submit-btn:hover {
+    background-color: #004d40;
+}
+
+/* Specific Button Styling */
+.submit-btn {
+    width: 100%;
+    font-size: 18px;
+}
+
+/* Checkbox Label Styling */
+.day-option {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+/* Popup Styling */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#confirm-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #00796b;
+    color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-.submit-btn:hover {
+#confirm-button:hover {
     background-color: #004d40;
 }
