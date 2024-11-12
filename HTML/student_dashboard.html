@@ -8,63 +8,29 @@
     <script type="module" src="/JavaScript/studentScript.js" defer></script>
 </head>
 <body>
-    <!-- Buttons at the top right corner -->
-    <header class="header-bar"> 
-    <div>
-        <h2 id="welcomeMessage">Welcome! Select a term to populate your courses.</h2>
-    </div><div class="top-right-buttons">
-        <button class="scan-btn" onclick="scanQR()">Scan QR Code</button>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-    </div>
+    <!-- Header with welcome message, Scan QR, and Logout buttons -->
+    <header class="header-bar">
+        <div>
+            <h2 id="welcomeMessage">Welcome!</h2>
+        </div>
+        <div class="top-right-buttons">
+            <button class="scan-btn" onclick="scanQR()">Scan QR Code</button>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
     </header>
-    <!-- Welcome message and term selection section -->
-    <div class="welcome-section">
-        <h2>Select a term to populate your courses.</h2>
-        <select id="termDropdown">
-            <option value="" disabled selected>Select a term</option>
-            <option value="Fall 2024">Fall 2024</option>
-            <option value="Spring 2024">Spring 2024</option>
-            <!-- Add more terms as needed -->
-        </select>
-    </div>
 
-    <!-- Courses Section - Available and Enrolled displayed side by side -->
+    <!-- Courses Section for Enrolled Courses -->
     <div class="courses-container">
-        <div class="available-courses-section">
-            <h2>Available Courses</h2>
-            <table id="availableCourses" class="course-table">
-                <thead>
-                    <tr>
-                        <th>Course Title</th>
-                        <th>Section</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Course rows will be dynamically inserted here -->
-                </tbody>
-            </table>
-        </div>
-
-        <div class="enrolled-courses-section">
-            <h2>Enrolled Courses</h2>
-            <div id="enrolledCourses" class="course-cards">
-                <!-- Enrolled course cards will be dynamically added here -->
-            </div>
+        <h2 class="enrolled-header">Enrolled Courses</h2>
+        <div id="enrolledCourses" class="course-cards">
+            <!-- Enrolled course cards will be dynamically added here -->
         </div>
     </div>
-    <div class="paw-container paw-top-left">
-        <div class="paw">🐾</div>
-      </div>
-      <div class="paw-container paw-top-right">
-        <div class="paw">🐾</div>
-      </div>
-      <div class="paw-container paw-bottom-left">
-        <div class="paw">🐾</div>
-      </div>
-      <div class="paw-container paw-bottom-right">
-        <div class="paw">🐾</div>
-      </div>
-      
+
+    <!-- Floating Paws Decoration -->
+    <div class="paw-container paw-top-left"><div class="paw">🐾</div></div>
+    <div class="paw-container paw-top-right"><div class="paw">🐾</div></div>
+    <div class="paw-container paw-bottom-left"><div class="paw">🐾</div></div>
+    <div class="paw-container paw-bottom-right"><div class="paw">🐾</div></div>
 </body>
 </html>

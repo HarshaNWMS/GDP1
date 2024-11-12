@@ -49,7 +49,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
           if (role === 'student' && userData.role === 'student' && /^[sS]\d{6}@nwmissouri\.edu$/.test(email)) {
             window.location.href = "/html/student_dashboard.html";
-          } else if (role === 'instructor' && userData.role === 'instructor' && /^[a-zA-Z]+\.[a-zA-Z]+@nwmissouri\.edu$/.test(email)) {
+          } else if (role === 'instructor' && userData.role === 'instructor' && /^[a-zA-Z]@nwmissouri\.edu$/.test(email)) {
             window.location.href = "/html/instructor_dashboard.html";
           } else {
             errorMessage.textContent = `Please log in with a valid ${role} email address.`;
