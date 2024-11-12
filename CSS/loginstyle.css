@@ -6,9 +6,8 @@
   font-family: 'Poppins', sans-serif;
 }
 
-body {  
+body {
   display: grid;
-  
   place-items: center;
   min-height: 100vh;
   align-items: center;
@@ -17,23 +16,19 @@ body {
 }
 
 .container {
- 
-/* Container Styles */
-
-  width: 100%; /* Take the full width available */
-  max-width: 500px; 
+  width: 150%;
+  max-width: 500px; /* Adjusted for a more compact width */
   background-color: white;
-  padding: 40px;
+  padding: 20px; /* Reduced padding */
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  z-index: 10; /* Stay above floating paws */
-  margin-top: 80px; /* Add top margin to avoid overlap with the fixed header */
-
+  z-index: 10;
+  margin-top: 80px; /* Reduced top margin */
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Reduced margin */
 }
 
 form {
@@ -46,17 +41,17 @@ label {
   margin-bottom: 5px;
 }
 
-input[type="email"], input[type="password"] {
-  padding: 10px;
-  margin-bottom: 15px;
+select, input[type="email"], input[type="password"] {
+  padding: 8px; /* Reduced padding for inputs */
+  margin-bottom: 10px; /* Reduced margin */
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 15px; /* Slightly smaller font size */
 }
 
 button {
-  padding: 12px;
-  background-color: rgb(0,103,71);
+  padding: 10px; /* Reduced button padding */
+  background-color: rgb(0, 103, 71);
   color: white;
   border: none;
   border-radius: 5px;
@@ -71,8 +66,8 @@ button:hover {
 
 .register-btn {
   text-align: center;
-  margin-top: 20px;
-  color: rgb(0,103,71);
+  margin-top: 15px; /* Reduced margin */
+  color: rgb(0, 103, 71);
   text-decoration: none;
 }
 
@@ -80,83 +75,40 @@ button:hover {
   text-decoration: underline;
 }
 
-/* Floating Paws */
-.paw-container {
-  position: fixed;
-  z-index: 1;
-  pointer-events: none; /* Ensure it doesn't interfere with interactions */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-.paw {
-  font-size: 50px;
-  color: rgba(255, 255, 255, 0.6); /* Slightly transparent */
-  animation: float 6s ease-in-out infinite, drift 12s linear infinite;
-}
-
-/* Animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes drift {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(30px);
-  }
-}
-
-/* Positioning for the paws */
-.paw-top-left {
-  top: 20px;
-  left: 20px;
-}
-
-.paw-top-right {
-  top: 20px;
-  right: 20px;
-}
-
-.paw-bottom-left {
-  bottom: 20px;
-  left: 20px;
-}
-
-.paw-bottom-right {
-  bottom: 20px;
-  right: 20px;
-}
 header {
-  background-color: #006747; /* Header background color */
-  color: white; /* Header text color */
-  padding: 20px 0; /* Padding for the header */
-  width: 100%; /* Full width */
-  position: fixed; /* Fixed position at the top */
-  top: 0; /* Align to top */
-  left: 0; /* Align to left */
-  z-index: 100; /* Ensure it is above other elements */
+  background-color: #006747;
+  color: white;
+  padding: 10px 0; /* Reduced padding for a more compact header */
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
 .header-title {
-  display: flex; /* Use flexbox for layout */
-  align-items: center; /* Align items vertically */
-  justify-content: flex-start; /* Align items to the left */
-  padding-left: 20px; /* Padding on the left */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 15px; /* Reduced left padding */
 }
 
 .header-title img {
-  margin-right: 20px; /* Adds space between the logo and the title */
+  margin-right: 10px;
+  width: 70px; /* Smaller logo size */
+  height: auto;
 }
 
 .header-title h1 {
-  margin: 0; /* Remove default h1 margins */
-  font-size: 2em; /* Adjust font size as needed */
+  margin: 0;
+  font-size: 1.2em; /* Reduced font size */
   font-weight: bold;
-  color: white; /* Ensure the text color is white */
+  color: white;
 }

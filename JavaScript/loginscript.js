@@ -22,46 +22,47 @@ const db = getDatabase();
 document.getElementById("loginForm").addEventListener("submit", function (event) {
   event.preventDefault();
 
+  const role = document.getElementById("role").value;
   const email = document.getElementById("username").value;
   const password = document.getElementById("password").value;
+  const errorMessage = document.getElementById("error-message");
+
+  if (!role) {
+    errorMessage.textContent = "Please select a role.";
+    return;
+  }
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // User signed in
       const user = userCredential.user;
       const uid = user.uid;
 
-      // Check if user is admin by email
-      if (email === 'admin@nwmissouri.edu') {
-        window.location.href = "/HTML/admin_dashboard.html";  // Redirect to Admin Dashboard
-        return; // Exit the function for admin login
+      if (role === 'admin' && email === 'admin@nwmissouri.edu') {
+        window.location.href = "/HTML/admin_dashboard.html";
+        return;
       }
 
-      // Fetch user info from the Realtime Database for non-admin users
       const userRef = ref(db, 'users/' + uid);
       get(userRef).then((snapshot) => {
         if (snapshot.exists()) {
           const userData = snapshot.val();
-          console.log("User data:", userData);
 
-          // Redirect based on user role
-          if (userData.role === 'student') {
-            window.location.href = "/html/student_dashboard.html";  // Redirect to Student Dashboard
-          } else if (userData.role === 'instructor') {
-            window.location.href = "/html/instructor_dashboard.html";  // Redirect to Instructor Dashboard
+          if (role === 'student' && userData.role === 'student' && /^[sS]\d{6}@nwmissouri\.edu$/.test(email)) {
+            window.location.href = "/html/student_dashboard.html";
+          } else if (role === 'instructor' && userData.role === 'instructor' && /^[a-zA-Z]+\.[a-zA-Z]+@nwmissouri\.edu$/.test(email)) {
+            window.location.href = "/html/instructor_dashboard.html";
           } else {
-            alert("User role not recognized.");
+            errorMessage.textContent = `Please log in with a valid ${role} email address.`;
           }
         } else {
-          alert("No user data found!");
+          errorMessage.textContent = "No user data found!";
         }
       }).catch((error) => {
         console.error("Error fetching user data:", error);
       });
     })
     .catch((error) => {
-      const errorMessage = error.message;
-      alert(errorMessage);
+      errorMessage.textContent = error.message;
     });
 });
 
