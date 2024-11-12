@@ -8,7 +8,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
   position: relative;
-  overflow: hidden; /* Ensure the background image covers the full screen */
+  overflow: hidden;
 }
 
 /* Add the pseudo-element for background opacity */
@@ -28,179 +28,233 @@ body::before {
   z-index: -1; /* Ensure it stays behind other content */
 }
 
-
 /* Container for the dashboard */
 .dashboard-container {
-    width: 35%;
-    margin: auto;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
+  width: 35%;
+  margin: auto;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
 }
 
 /* Header styling */
 .header {
-    text-align: center;
-    color: #00796b;
-    margin-bottom: 40px;
-    font-size: 28px;
-    font-weight: bold;
+  text-align: center;
+  color: #00796b;
+  margin-bottom: 40px;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 /* Container for options */
 .options-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Adds space between buttons */
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adds space between buttons */
+  align-items: center;
 }
 
 /* Button styling for options */
 .option-btn {
-    padding: 15px 30px;
-    background-color: #00796b;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    cursor: pointer;
-    display: inline-block;
-    width: 200px; /* Ensures uniform width */
+  padding: 15px 30px;
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  display: inline-block;
+  width: 200px; /* Ensures uniform width */
 }
 
 /* Hover effect for buttons */
 .option-btn:hover {
-    background-color: #004d40;
+  background-color: #004d40;
 }
 
 /* Popup styling */
 .popup {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1000; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Popup content styling */
 .popup-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 10px;
-    text-align: center;
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  text-align: center;
 }
 
 /* Close button styling */
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
+
 .back-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 10px 20px;
-    background-color: #00796b;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #00796b;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
 
 .back-btn:hover {
-    background-color: #004d40;
+  background-color: #004d40;
 }
+
 .logout-btn {
-    position: absolute;
-    top: 20px;
-    right: 80px;
-    padding: 10px 20px;
-    background-color: #c62828;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s;
+  position: absolute;
+  top: 20px;
+  right: 80px;
+  padding: 10px 20px;
+  background-color: #c62828;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
 
 .logout-btn:hover {
-    background-color: #b71c1c;
+  background-color: #b71c1c;
 }
+
 /* Floating paws in all four corners */
 .paw-container {
-    position: fixed;
-    width: 50px;
-    height: 50px;
-    background-color: rgba(0, 89, 63, 0.7);
-    border-radius: 50%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: float 3s ease-in-out infinite;
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 89, 63, 0.7);
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float 3s ease-in-out infinite;
+}
+
+.paw-container .paw {
+  font-size: 24px; /* Adjust the size of the paw print */
+  color: white;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
   }
-  
-  .paw-container .paw {
-    font-size: 24px; /* Adjust the size of the paw print */
-    color: white;
+  50% {
+    transform: translateY(-10px);
   }
-  
-  /* Floating animation */
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-  
-  /* Positioning the paws in all four corners */
-  .paw-top-left {
-    top: 10px;
-    left: 10px;
-  }
-  
-  .paw-top-right {
-    top: 10px;
-    right: 10px;
-  }
-  
-  .paw-bottom-left {
-    bottom: 10px;
-    left: 10px;
-  }
-  
-  .paw-bottom-right {
-    bottom: 10px;
-    right: 10px;
-  }
-  
-  .paw-container:hover {
-    animation-play-state: paused;
-    background-color: #00492d; /* Darker green on hover */
-  }
-  
+}
+
+/* Positioning the paws in all four corners */
+.paw-top-left {
+  top: 10px;
+  left: 10px;
+}
+
+.paw-top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.paw-bottom-left {
+  bottom: 10px;
+  left: 10px;
+}
+
+.paw-bottom-right {
+  bottom: 10px;
+  right: 10px;
+}
+
+.paw-container:hover {
+  animation-play-state: paused;
+  background-color: #00492d; /* Darker green on hover */
+}
+
+/* Enrollment section styling */
+.enroll-students-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  margin: 20px auto;
+  text-align: left;
+}
+
+/* Form group styling */
+.form-group {
+  margin-bottom: 15px;
+}
+
+#studentResults {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+#studentResults li {
+  padding: 8px;
+  background-color: #e0f7fa;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#studentResults li:hover {
+  background-color: #b2ebf2;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #004d40;
+}
+
+#statusMessage {
+  color: #00796b;
+  margin-top: 10px;
+}

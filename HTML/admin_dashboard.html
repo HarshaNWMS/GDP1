@@ -17,21 +17,32 @@
             <div class="option">
                 <a href="admin_update_course.html" class="option-btn">Update Course</a>
             </div>
+            <div class="option">
+                <button onclick="openEnrollmentForm()" class="option-btn">Enroll Students</button>
+            </div>
         </div>
-        
     </div>
-    <div class="paw-container paw-top-left">
-        <div class="paw">🐾</div>
-      </div>
-      <div class="paw-container paw-top-right">
-        <div class="paw">🐾</div>
-      </div>
-      <div class="paw-container paw-bottom-left">
-        <div class="paw">🐾</div>
-      </div>
-      <div class="paw-container paw-bottom-right">
-        <div class="paw">🐾</div>
-      </div>
-      
+
+    <!-- Enroll Students Section -->
+    <div id="enrollStudentsSection" class="enroll-students-section" style="display: none;">
+        <h2>Enroll Students in a Course</h2>
+        <div class="form-group">
+            <label for="courseDropdown">Select Course:</label>
+            <select id="courseDropdown"></select>
+        </div>
+
+        <!-- CSV Upload Section -->
+        <div class="form-group">
+            <label for="csvFileUpload">Upload CSV File:</label>
+            <input type="file" id="csvFileUpload" accept=".csv">
+            <button onclick="processCSV()" class="submit-btn">Upload and Enroll</button>
+        </div>
+
+        <!-- Status Message Display -->
+        <div id="statusMessage"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+    <script type="module" src="../JavaScript/admin_dashboard.js"></script>
+    
 </body>
 </html>
