@@ -16,14 +16,26 @@
         </header>
         <div class="form">
             <p id="courseTitle"></p>
+            <!-- Dropdown for selecting timer duration -->
+            <label for="timerSelect">Select Timer Duration:</label>
+            <select id="timerSelect">
+                <option value="30">30 sec</option>
+                <option value="60">1 min</option>
+                <option value="300">5 mins</option>
+                <option value="600">10 mins</option>
+                <option value="900">15 mins</option>
+                <option value="1200">20 mins</option>
+            </select>
             <div id="js_timer">
                 <div id="timer">00:30</div>        
             </div>
             <button id="generateBtn">Generate QR Code</button>
+            <button id="stopBtn">Stop</button>
         </div>
         <div class="qr-code">
             <img id="qrImage" src="" alt="qr-code">
         </div>
+        
     </div>
 </body>
 </html>
