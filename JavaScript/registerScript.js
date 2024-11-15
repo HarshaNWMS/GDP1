@@ -1,3 +1,4 @@
+// Import Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
@@ -27,23 +28,27 @@ document.getElementById("registrationForm").addEventListener("submit", function 
   const email = document.getElementById("Email").value;
   const password = document.getElementById("password").value;
 
+  // Extract student ID from email
+  const studentIdMatch = email.match(/^[sS]\d{6}/);
+  if (!studentIdMatch) {
+    alert("Invalid email format. Must start with Student ID (e.g., s123456@nwmissouri.edu).");
+    return;
+  }
+  const studentId = studentIdMatch[0]; // Extracted student ID
+
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // User signed up successfully
-      const user = userCredential.user;
-      const uid = user.uid;
-
       // Define the role based on email
       let role = /^[sS]\d{6}@nwmissouri\.edu$/.test(email) ? "student" : "instructor";
 
-      // Write user data to Realtime Database under 'users' collection
-      set(ref(db, 'users/' + uid), {
+      // Write user data to Realtime Database using student ID as the key
+      set(ref(db, 'users/' + studentId), {
         firstName: firstName,
         lastName: lastName,
         email: email,
         role: role
       }).then(() => {
-        alert("User registered successfully and added to Realtime Database!");
+        alert("User registered successfully with Student ID as key in Realtime Database!");
         // Redirect to login page
         window.location.href = "../HTML/index.html";
       }).catch((error) => {

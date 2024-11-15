@@ -1,3 +1,4 @@
+// Import Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
@@ -18,6 +19,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase();
 
+// Function to extract student ID from email
+function extractStudentId(email) {
+  const match = email.match(/^s\d{6}/i);  // Matches 's' followed by 6 digits
+  return match ? match[0].toLowerCase() : null;
+}
+
 // Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", function (event) {
   event.preventDefault();
@@ -34,22 +41,27 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
-      const uid = user.uid;
+      const studentId = extractStudentId(email); // Extract student ID from email
+      if (!studentId) {
+        errorMessage.textContent = "Invalid email format.";
+        return;
+      }
 
       if (role === 'admin' && email === 'admin@nwmissouri.edu') {
         window.location.href = "/HTML/admin_dashboard.html";
         return;
       }
 
-      const userRef = ref(db, 'users/' + uid);
+      // Use student ID to look up user details in the database
+      const userRef = ref(db, 'users/' + studentId);
       get(userRef).then((snapshot) => {
         if (snapshot.exists()) {
           const userData = snapshot.val();
-
-          if (role === 'student' && userData.role === 'student' && /^[sS]\d{6}@nwmissouri\.edu$/.test(email)) {
+          
+          // Check if the role matches the user role from the database
+          if (role === 'student' && userData.role === 'student') {
             window.location.href = "/html/student_dashboard.html";
-          } else if (role === 'instructor' && userData.role === 'instructor' && /^[a-zA-Z]@nwmissouri\.edu$/.test(email)) {
+          } else if (role === 'instructor' && userData.role === 'instructor') {
             window.location.href = "/html/instructor_dashboard.html";
           } else {
             errorMessage.textContent = `Please log in with a valid ${role} email address.`;
@@ -59,6 +71,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
         }
       }).catch((error) => {
         console.error("Error fetching user data:", error);
+        errorMessage.textContent = "Error fetching user data.";
       });
     })
     .catch((error) => {

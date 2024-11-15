@@ -1,8 +1,9 @@
+// Import Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
-// Firebase config - Using the exact details you've shared
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
   authDomain: "qrcodescanner-150cc.firebaseapp.com",
@@ -18,11 +19,24 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase();
 
+// Function to extract student ID from email
+function extractStudentId(email) {
+  const match = email.match(/^s\d{6}/i);  // Matches 's' followed by 6 digits
+  return match ? match[0].toLowerCase() : null;
+}
+
 // Fetch and display student's name and enrolled courses
 auth.onAuthStateChanged((user) => {
   if (user) {
-    const uid = user.uid;
-    const userRef = ref(db, 'users/' + uid);
+    const email = user.email;
+    const studentId = extractStudentId(email);
+
+    if (!studentId) {
+      console.error("Invalid email format. Unable to extract student ID.");
+      return;
+    }
+
+    const userRef = ref(db, 'users/' + studentId);
 
     // Fetch student's name
     get(userRef).then((snapshot) => {
@@ -33,7 +47,7 @@ auth.onAuthStateChanged((user) => {
         document.getElementById('welcomeMessage').textContent = `Welcome, ${studentName}!`;
 
         // Fetch enrolled courses
-        const enrolledCoursesRef = ref(db, `users/${uid}/enrolledCourses`);
+        const enrolledCoursesRef = ref(db, `users/${studentId}/enrolledCourses`);
         get(enrolledCoursesRef).then((snapshot) => {
           const enrolledCourses = snapshot.val();
           if (enrolledCourses) {
@@ -45,7 +59,7 @@ auth.onAuthStateChanged((user) => {
           console.error("Error fetching enrolled courses:", error);
         });
       } else {
-        console.error("No user data found for this user.");
+        console.error("No user data found for this student ID.");
       }
     }).catch((error) => {
       console.error("Error fetching user data:", error);
