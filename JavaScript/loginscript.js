@@ -19,9 +19,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase();
 
+// Function to sanitize email for Firebase-compatible keys
+function sanitizeEmail(email) {
+  return email.replace(/\./g, "_dot_").replace(/@/g, "_at_");
+}
+
 // Function to extract student ID from email
 function extractStudentId(email) {
-  const match = email.match(/^s\d{6}/i);  // Matches 's' followed by 6 digits
+  const match = email.match(/^s\d{6}/i); // Matches 's' followed by 6 digits
   return match ? match[0].toLowerCase() : null;
 }
 
@@ -39,40 +44,56 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
     return;
   }
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const studentId = extractStudentId(email); // Extract student ID from email
-      if (!studentId) {
-        errorMessage.textContent = "Invalid email format.";
-        return;
-      }
-
-      if (role === 'admin' && email === 'admin@nwmissouri.edu') {
+  // Admin login validation
+  if (role === "admin" && email === "admin@nwmissouri.edu") {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
         window.location.href = "/HTML/admin_dashboard.html";
+      })
+      .catch((error) => {
+        errorMessage.textContent = error.message;
+      });
+    return;
+  }
+
+  // Student/Instructor login validation
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      let userId;
+      if (role === "student") {
+        userId = extractStudentId(email); // Extract student ID
+      } else if (role === "instructor") {
+        userId = sanitizeEmail(email); // Sanitize email for instructor
+      }
+
+      if (!userId) {
+        errorMessage.textContent = `Invalid email format for ${role}.`;
         return;
       }
 
-      // Use student ID to look up user details in the database
-      const userRef = ref(db, 'users/' + studentId);
-      get(userRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const userData = snapshot.val();
-          
-          // Check if the role matches the user role from the database
-          if (role === 'student' && userData.role === 'student') {
-            window.location.href = "/html/student_dashboard.html";
-          } else if (role === 'instructor' && userData.role === 'instructor') {
-            window.location.href = "/html/instructor_dashboard.html";
+      // Use userId to look up user details in the database
+      const userRef = ref(db, `users/${userId}`);
+      get(userRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+
+            // Check if the role matches the user role from the database
+            if (role === "student" && userData.role === "student") {
+              window.location.href = "/html/student_dashboard.html";
+            } else if (role === "instructor" && userData.role === "instructor") {
+              window.location.href = "/html/instructor_dashboard.html";
+            } else {
+              errorMessage.textContent = `Please log in with a valid ${role} email address.`;
+            }
           } else {
-            errorMessage.textContent = `Please log in with a valid ${role} email address.`;
+            errorMessage.textContent = "No user data found!";
           }
-        } else {
-          errorMessage.textContent = "No user data found!";
-        }
-      }).catch((error) => {
-        console.error("Error fetching user data:", error);
-        errorMessage.textContent = "Error fetching user data.";
-      });
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+          errorMessage.textContent = "Error fetching user data.";
+        });
     })
     .catch((error) => {
       errorMessage.textContent = error.message;
