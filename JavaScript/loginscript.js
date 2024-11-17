@@ -26,7 +26,7 @@ function sanitizeEmail(email) {
 
 // Function to extract student ID from email
 function extractStudentId(email) {
-  const match = email.match(/^s\d{6}/i); // Matches 's' followed by 6 digits
+  const match = email.match(/^s\d{6}/i);
   return match ? match[0].toLowerCase() : null;
 }
 
@@ -44,26 +44,18 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
     return;
   }
 
-  // Admin login validation
-  if (role === "admin" && email === "admin@nwmissouri.edu") {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        window.location.href = "/HTML/admin_dashboard.html";
-      })
-      .catch((error) => {
-        errorMessage.textContent = error.message;
-      });
-    return;
-  }
-
-  // Student/Instructor login validation
   signInWithEmailAndPassword(auth, email, password)
     .then(() => {
+      const uid = auth.currentUser.uid;
       let userId;
+
       if (role === "student") {
-        userId = extractStudentId(email); // Extract student ID
+        userId = extractStudentId(email);
       } else if (role === "instructor") {
-        userId = sanitizeEmail(email); // Sanitize email for instructor
+        userId = uid; // Use UID for instructors
+      } else if (role === "admin" && email === "admin@nwmissouri.edu") {
+        window.location.href = "/HTML/admin_dashboard.html";
+        return;
       }
 
       if (!userId) {
@@ -71,18 +63,17 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
         return;
       }
 
-      // Use userId to look up user details in the database
       const userRef = ref(db, `users/${userId}`);
       get(userRef)
         .then((snapshot) => {
           if (snapshot.exists()) {
             const userData = snapshot.val();
-
-            // Check if the role matches the user role from the database
-            if (role === "student" && userData.role === "student") {
-              window.location.href = "/html/student_dashboard.html";
-            } else if (role === "instructor" && userData.role === "instructor") {
-              window.location.href = "/html/instructor_dashboard.html";
+            if (role === userData.role) {
+              if (role === "student") {
+                window.location.href = "/html/student_dashboard.html";
+              } else if (role === "instructor") {
+                window.location.href = "/html/instructor_dashboard.html";
+              }
             } else {
               errorMessage.textContent = `Please log in with a valid ${role} email address.`;
             }

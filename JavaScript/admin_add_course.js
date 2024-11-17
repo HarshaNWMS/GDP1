@@ -1,8 +1,8 @@
-// Import the Firebase functions
+// Import Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
-// Your web app's Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
     authDomain: "qrcodescanner-150cc.firebaseapp.com",
@@ -17,89 +17,100 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Function to populate instructor dropdown
+// Function to load instructors dynamically into the dropdown
 function loadInstructors() {
-    const instructorsRef = ref(db, 'users');
-    const instructorSelect = document.getElementById('instructor');
+    const instructorsRef = ref(db, "users");
+    const instructorSelect = document.getElementById("instructor");
     
-    // Fetch all users and filter by role = "instructor"
-    get(instructorsRef).then((snapshot) => {
+    get(instructorsRef).then(snapshot => {
         const users = snapshot.val();
         for (const userId in users) {
             const user = users[userId];
-            if (user.role === 'instructor') {
-                const option = document.createElement('option');
-                option.value = userId; // Store the instructor's UID
+            if (user.role === "instructor") {
+                const option = document.createElement("option");
+                option.value = userId; // Use userId as the value
                 option.textContent = `${user.firstName} ${user.lastName}`;
                 instructorSelect.appendChild(option);
             }
         }
-    }).catch((error) => {
-        console.error("Error fetching instructors: ", error);
+    }).catch(error => {
+        console.error("Error fetching instructors:", error);
     });
 }
 
-// Load the instructors when the page loads
+// Call loadInstructors on page load
 loadInstructors();
 
 // Handle form submission
 document.querySelector(".course-form").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault(); // Prevent default submission behavior
 
-    // Get form values
-    const term = document.getElementById("term").value;
-    const crn = document.getElementById("crn").value;
-    const department = document.getElementById("department").value;
-    const course = document.getElementById("course").value;
-    const section = document.getElementById("section").value;
-    const credits = document.getElementById("credits").value;
-    const title = document.getElementById("title").value;
-    const days = document.getElementById("days").value;
-    const time = document.getElementById("time").value;
-    const instructor = document.getElementById("instructor").value; // Get selected instructor UID
-    const capacity = document.getElementById("capacity").value;
-    const active = 0; // Starting active students
-    const remaining = capacity - active; // Calculate remaining seats
-    const date = document.getElementById("date").value;
+    const term = document.getElementById("term").value.trim();
+    const crn = document.getElementById("crn").value.trim();
+    const department = document.getElementById("department").value.trim();
+    const course = document.getElementById("course").value.trim();
+    const section = document.getElementById("section").value.trim();
+    const credits = document.getElementById("credits").value.trim();
+    const title = document.getElementById("title").value.trim();
+    const time = document.getElementById("time").value.trim();
+    const instructor = document.getElementById("instructor").value.trim();
+    const capacity = document.getElementById("capacity").value.trim();
+    const date = document.getElementById("date").value.trim();
 
-    // Show the confirmation popup
+    // Collect checked days
+    const dayCheckboxes = document.querySelectorAll("#days input[type=checkbox]:checked");
+    const days = Array.from(dayCheckboxes).map(checkbox => checkbox.value);
+
+    // Validate form fields
+    if (!term || !crn || !department || !course || !section || !credits || !title || !days.length || !time || !instructor || !capacity || !date) {
+        alert("All fields are required. Please fill out the form completely.");
+        return;
+    }
+
+    // Show confirmation popup
     document.getElementById("popup").style.display = "block";
 
-    // Add event listener for the Yes button
+    // Add event listener for the Yes button in the popup
     document.getElementById("confirmYes").onclick = function() {
-        // Write the new course to the database
-        set(ref(db, 'courses/' + crn), {
-            term: term,
-            crn: crn,
-            department: department,
-            course: course,
-            section: section,
-            credits: credits,
-            title: title,
-            days: days,
-            time: time,
-            instructor: instructor, // Store instructor's UID
-            capacity: capacity,
-            active: active,
-            remaining: remaining,
-            date: date
+        set(ref(db, "courses/" + crn), {
+            term,
+            crn,
+            department,
+            course,
+            section,
+            credits,
+            title,
+            days,
+            time,
+            instructor,
+            capacity: parseInt(capacity),
+            active: 0,
+            remaining: parseInt(capacity),
+            date
         })
         .then(() => {
-            // Close the popup
+            // Close popup and redirect
             document.getElementById("popup").style.display = "none";
-            // Redirect to the admin dashboard
-            window.location.href = '../HTML/admin_dashboard.html';
+            alert("Course added successfully!");
+            window.location.href = "../HTML/admin_dashboard.html";
         })
-        .catch((error) => {
-            console.error("Error writing to database:", error);
-            document.getElementById("popup").style.display = "none"; // Close the popup on error
+        .catch(error => {
+            console.error("Error saving course:", error);
+            alert("An error occurred while saving the course. Please try again.");
+            document.getElementById("popup").style.display = "none";
         });
     };
+
+    // Add event listener for the No button to close the popup
+    document.getElementById("confirmNo").onclick = function() {
+        document.getElementById("popup").style.display = "none";
+    };
 });
+
+// Initialize flatpickr for the date input
 document.addEventListener("DOMContentLoaded", function () {
     flatpickr("#date", {
-      dateFormat: "MM-DD-YYYY", // Customize date format as needed
-      minDate: "today", // Only allow dates from today onward
+        dateFormat: "Y-m-d",
+        minDate: "today"
     });
-  });
-  
+});

@@ -28,35 +28,40 @@ document.getElementById("registrationForm").addEventListener("submit", function 
   const email = document.getElementById("Email").value;
   const password = document.getElementById("password").value;
 
-  // Extract student ID from email
-  const studentIdMatch = email.match(/^[sS]\d{6}/);
-  if (!studentIdMatch) {
-    alert("Invalid email format. Must start with Student ID (e.g., s123456@nwmissouri.edu).");
+  let userId;
+  let role;
+
+  if (/^admin@nwmissouri\.edu$/.test(email)) {
+    userId = "admin";
+    role = "admin";
+  } else if (/^[sS]\d{6}@nwmissouri\.edu$/.test(email)) {
+    userId = email.match(/^[sS]\d{6}/)[0].toLowerCase();
+    role = "student";
+  } else if (/^[a-zA-Z]+@nwmissouri\.edu$/.test(email)) {
+    role = "instructor";
+  } else {
+    alert("Invalid email format. Use a valid NWMSU email.");
     return;
   }
-  const studentId = studentIdMatch[0]; // Extracted student ID
 
   createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Define the role based on email
-      let role = /^[sS]\d{6}@nwmissouri\.edu$/.test(email) ? "student" : "instructor";
+    .then(() => {
+      const uid = auth.currentUser.uid;
+      userId = role === "instructor" ? uid : userId;
 
-      // Write user data to Realtime Database using student ID as the key
-      set(ref(db, 'users/' + studentId), {
+      set(ref(db, `users/${userId}`), {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        role: role
+        role: role,
       }).then(() => {
-        alert("User registered successfully with Student ID as key in Realtime Database!");
-        // Redirect to login page
+        alert("User registered successfully!");
         window.location.href = "../HTML/index.html";
       }).catch((error) => {
         console.error("Error adding user to Realtime Database:", error);
       });
     })
     .catch((error) => {
-      const errorMessage = error.message;
-      alert(errorMessage);
+      alert(error.message);
     });
 });
