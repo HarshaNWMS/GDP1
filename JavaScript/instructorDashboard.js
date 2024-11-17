@@ -1,9 +1,7 @@
-// Import Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
   authDomain: "qrcodescanner-150cc.firebaseapp.com",
@@ -11,106 +9,113 @@ const firebaseConfig = {
   projectId: "qrcodescanner-150cc",
   storageBucket: "qrcodescanner-150cc.appspot.com",
   messagingSenderId: "425306294564",
-  appId: "1:425306294564:web:c514a419f71dde9fc3cbb1",
+  appId: "1:425306294564:web:c514a419f71dde9fc3cbb1"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase();
 
-// Handle user authentication and fetch instructor details
+// Handle authentication and load instructor data
 auth.onAuthStateChanged((user) => {
-  if (user) {
-    const uid = user.uid;
+    if (user) {
+        const uid = user.uid; // Instructor UID
+        const usersRef = ref(db, `users/${uid}`); // Reference to instructor data in Firebase
 
-    const usersRef = ref(db, `users/${uid}`);
-    get(usersRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const instructorData = snapshot.val();
-          document.getElementById("instructorName").textContent = `${instructorData.firstName} ${instructorData.lastName}`;
-          fetchCourses(uid);
-        } else {
-          document.getElementById("instructorName").textContent = "Instructor Not Found!";
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching instructor details:", error);
-      });
-  }
+        get(usersRef)
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const instructor = snapshot.val();
+                    document.getElementById("instructorName").textContent = `${instructor.firstName} ${instructor.lastName}`;
+                    loadCourses(uid); // Load instructor's courses
+                } else {
+                    document.getElementById("instructorName").textContent = "Instructor Not Found!";
+                    console.error("Instructor not found in database.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching instructor details:", error);
+            });
+    } else {
+        console.error("No user is signed in.");
+        window.location.href = "../HTML/index.html";
+    }
 });
 
-// Fetch and display courses assigned to the instructor
-function fetchCourses(instructorUID) {
-  const coursesRef = ref(db, "courses");
-  get(coursesRef)
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        const courses = snapshot.val();
-        const coursesContainer = document.getElementById("coursesContainer");
-        coursesContainer.innerHTML = "";
+// Load courses assigned to the instructor
+function loadCourses(instructorUID) {
+    const coursesRef = ref(db, "courses"); // Reference to courses data
+    const coursesContainer = document.getElementById("coursesContainer");
 
-        let coursesFound = false;
+    get(coursesRef)
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                const courses = snapshot.val();
+                coursesContainer.innerHTML = ""; // Clear any existing courses
 
-        for (const courseId in courses) {
-          const course = courses[courseId];
-          if (course.instructor === instructorUID) {
-            coursesFound = true;
+                let coursesFound = false;
 
-            const courseContainer = document.createElement("div");
-            courseContainer.classList.add("course-container");
+                for (const courseId in courses) {
+                    const course = courses[courseId];
+                    if (course.instructor === instructorUID) {
+                        coursesFound = true;
 
-            const courseTextContainer = document.createElement("div");
-            courseTextContainer.classList.add("course-text-container");
+                        // Create course card
+                        const courseCard = document.createElement("div");
+                        courseCard.classList.add("course-container");
 
-            const courseTitle = document.createElement("h3");
-            courseTitle.textContent = `${course.title}`;
+                        const courseTextContainer = document.createElement("div");
+                        courseTextContainer.classList.add("course-text-container");
 
-            const termText = document.createElement("p");
-            termText.textContent = `Term: ${course.term}`;
+                        const courseTitle = document.createElement("h3");
+                        courseTitle.textContent = course.title;
 
-            const deptText = document.createElement("p");
-            deptText.textContent = `Department: ${course.department || "N/A"}`;
+                        const termText = document.createElement("p");
+                        termText.textContent = `Term: ${course.term}`;
 
-            courseTextContainer.appendChild(courseTitle);
-            courseTextContainer.appendChild(termText);
-            courseTextContainer.appendChild(deptText);
+                        // Course Overview button
+                        const courseButton = document.createElement("button");
+                        courseButton.textContent = "Course Overview";
+                        courseButton.onclick = () => viewCourseOverview(courseId);
 
-            const overviewButton = document.createElement("button");
-            overviewButton.textContent = "Course Overview";
-            overviewButton.onclick = () => viewCourseOverview(courseId);
+                        // Append elements
+                        courseTextContainer.appendChild(courseTitle);
+                        courseTextContainer.appendChild(termText);
 
-            courseContainer.appendChild(courseTextContainer);
-            courseContainer.appendChild(overviewButton);
-            coursesContainer.appendChild(courseContainer);
-          }
-        }
+                        courseCard.appendChild(courseTextContainer);
+                        courseCard.appendChild(courseButton);
 
-        if (!coursesFound) {
-          const noCoursesMessage = document.createElement("p");
-          noCoursesMessage.textContent = "No courses assigned.";
-          coursesContainer.appendChild(noCoursesMessage);
-        }
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching courses:", error);
-    });
+                        coursesContainer.appendChild(courseCard);
+                    }
+                }
+
+                // If no courses are found
+                if (!coursesFound) {
+                    const noCoursesMessage = document.createElement("p");
+                    noCoursesMessage.textContent = "No courses assigned.";
+                    coursesContainer.appendChild(noCoursesMessage);
+                }
+            } else {
+                console.error("No courses found in the database.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching courses:", error);
+        });
 }
 
-// Navigate to course overview page
+// Navigate to Course Overview page
 function viewCourseOverview(courseId) {
-  window.location.href = `../HTML/courseOverview.html?courseId=${courseId}`;
+    window.location.href = `../HTML/courseOverview.html?courseId=${courseId}`;
 }
 
 // Logout function
 window.logout = function () {
-  signOut(auth)
-    .then(() => {
-      window.location.href = "../HTML/index.html";
-    })
-    .catch((error) => {
-      console.error("Error logging out:", error);
-    });
+    signOut(auth)
+        .then(() => {
+            window.location.href = "../HTML/index.html";
+        })
+        .catch((error) => {
+            console.error("Error logging out:", error);
+        });
 };

@@ -5,35 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Overview</title>
     <link rel="stylesheet" href="../CSS/courseOverview.css">
+    <script type="module" src="../JavaScript/courseOverview.js" defer></script>
 </head>
 <body>
-
-    <!-- Buttons placed outside of the container, aligned to top-right -->
     <div class="top-right-buttons">
-        <button id="generateQRBtn">Generate QR Code</button>
-        <button id="backToDashboard">Back to Dashboard</button>
+        <button id="backToDashboardButton">Back to Dashboard</button>
+        <button id="generateQRButton">Generate QR</button>
     </div>
-
-    <!-- Main container for course overview details -->
     <div class="container">
         <h1>Course Overview</h1>
-
-        <!-- Course details section -->
-        <div class="course-details" id="courseDetails">
-            <h2>Course Title and Section</h2>
-            <p><strong>Instructor:</strong></p>
-            <p><strong>Credits:</strong></p>
-            <p><strong>Capacity:</strong></p>
-            <p><strong>Remaining Seats:</strong></p>
-        </div>
-
-        <!-- Registered students section -->
-        <div class="registered-students">
-            <h3>Registered Students</h3>
-            <ul id="studentList"></ul>
+        <table id="attendanceTable">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Attendance Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Attendance rows will be dynamically loaded here -->
+            </tbody>
+        </table>
+        <div class="date-navigation">
+            <button id="backButton">← Previous Day</button>
+            <button id="forwardButton">Next Day →</button>
         </div>
     </div>
-
-    <script type="module" src="../JavaScript/courseOverview.js"></script>
 </body>
 </html>

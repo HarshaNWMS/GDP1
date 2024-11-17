@@ -9,13 +9,16 @@
     <script type="module" src="../JavaScript/scrum.js"></script>
 </head>
 <body>
-    <a href="../HTML/courseOverview.html" id="backToCourseOverview">Back to Course Overview</a>
+    <!-- Back Button -->
+    <button id="backToCourseOverview">Back to Course Overview</button>
+
     <div class="wrapper">
         <header>
             <h1>QR Code Generator</h1>
         </header>
         <div class="form">
             <p id="courseTitle"></p>
+            
             <!-- Dropdown for selecting timer duration -->
             <label for="timerSelect">Select Timer Duration:</label>
             <select id="timerSelect">
@@ -26,16 +29,21 @@
                 <option value="900">15 mins</option>
                 <option value="1200">20 mins</option>
             </select>
+
+            <!-- Timer Display -->
             <div id="js_timer">
                 <div id="timer">00:30</div>        
             </div>
+
+            <!-- QR Code Control Buttons -->
             <button id="generateBtn">Generate QR Code</button>
             <button id="stopBtn">Stop</button>
         </div>
+
+        <!-- QR Code Display -->
         <div class="qr-code">
             <img id="qrImage" src="" alt="qr-code">
         </div>
-        
     </div>
 </body>
 </html>

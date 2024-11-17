@@ -11,7 +11,7 @@ const firebaseConfig = {
   projectId: "qrcodescanner-150cc",
   storageBucket: "qrcodescanner-150cc.appspot.com",
   messagingSenderId: "425306294564",
-  appId: "1:425306294564:web:c514a419f71dde9fc3cbb1",
+  appId: "1:425306294564:web:c514a419f71dde9fc3cbb1"
 };
 
 // Initialize Firebase
@@ -19,14 +19,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase();
 
-// Function to sanitize email for Firebase-compatible keys
-function sanitizeEmail(email) {
-  return email.replace(/\./g, "_dot_").replace(/@/g, "_at_");
-}
-
 // Function to extract student ID from email
 function extractStudentId(email) {
-  const match = email.match(/^s\d{6}/i);
+  const match = email.match(/^[sS]\d{6}/); // Matches 's' followed by 6 digits
   return match ? match[0].toLowerCase() : null;
 }
 
@@ -44,47 +39,63 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
     return;
   }
 
+  // Authenticate the user
   signInWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      const uid = auth.currentUser.uid;
-      let userId;
+    .then((userCredential) => {
+      const user = userCredential.user;
 
       if (role === "student") {
-        userId = extractStudentId(email);
-      } else if (role === "instructor") {
-        userId = uid; // Use UID for instructors
-      } else if (role === "admin" && email === "admin@nwmissouri.edu") {
-        window.location.href = "/HTML/admin_dashboard.html";
-        return;
-      }
+        const studentId = extractStudentId(email);
+        if (!studentId) {
+          errorMessage.textContent = "Invalid student email format.";
+          return;
+        }
 
-      if (!userId) {
-        errorMessage.textContent = `Invalid email format for ${role}.`;
-        return;
-      }
-
-      const userRef = ref(db, `users/${userId}`);
-      get(userRef)
-        .then((snapshot) => {
+        // Lookup student data using student ID
+        const studentRef = ref(db, `users/${studentId}`);
+        get(studentRef).then((snapshot) => {
           if (snapshot.exists()) {
-            const userData = snapshot.val();
-            if (role === userData.role) {
-              if (role === "student") {
-                window.location.href = "/html/student_dashboard.html";
-              } else if (role === "instructor") {
-                window.location.href = "/html/instructor_dashboard.html";
-              }
+            const studentData = snapshot.val();
+            if (studentData.role === "student") {
+              window.location.href = "/html/student_dashboard.html";
             } else {
-              errorMessage.textContent = `Please log in with a valid ${role} email address.`;
+              errorMessage.textContent = "Invalid role for this email.";
             }
           } else {
-            errorMessage.textContent = "No user data found!";
+            errorMessage.textContent = "Student data not found!";
           }
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-          errorMessage.textContent = "Error fetching user data.";
+        }).catch((error) => {
+          console.error("Error fetching student data:", error);
+          errorMessage.textContent = "Error fetching student data.";
         });
+      } else if (role === "instructor") {
+        // Lookup instructor data using UID
+        const instructorRef = ref(db, `users/${user.uid}`);
+        get(instructorRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const instructorData = snapshot.val();
+            if (instructorData.role === "instructor") {
+              window.location.href = "/html/instructor_dashboard.html";
+            } else {
+              errorMessage.textContent = "Invalid role for this email.";
+            }
+          } else {
+            errorMessage.textContent = "Instructor data not found!";
+          }
+        }).catch((error) => {
+          console.error("Error fetching instructor data:", error);
+          errorMessage.textContent = "Error fetching instructor data.";
+        });
+      } else if (role === "admin") {
+        // Check if email belongs to admin
+        if (email === "admin@nwmissouri.edu") {
+          window.location.href = "/html/admin_dashboard.html";
+        } else {
+          errorMessage.textContent = "Invalid admin credentials.";
+        }
+      } else {
+        errorMessage.textContent = "Invalid role selected.";
+      }
     })
     .catch((error) => {
       errorMessage.textContent = error.message;
