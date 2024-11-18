@@ -19,9 +19,14 @@ const db = getDatabase();
 const auth = getAuth();
 
 window.onload = async function () {
-    const ctx = document.getElementById('attendanceChart').getContext('2d');
+    const ctx = document.getElementById("attendanceChart").getContext("2d");
+    const courseId = new URLSearchParams(window.location.search).get("courseId");
 
-    // Fetch logged-in user details by email
+    if (!courseId) {
+        document.getElementById("progressMessage").textContent = "Invalid course ID.";
+        return;
+    }
+
     const user = await fetchLoggedInUserByEmail();
     if (!user) {
         document.getElementById("progressMessage").textContent = "Failed to fetch user details. Please log in.";
@@ -29,14 +34,6 @@ window.onload = async function () {
     }
 
     const studentId = user.studentId;
-    const enrolledCourses = user.enrolledCourses;
-
-    if (!enrolledCourses || Object.keys(enrolledCourses).length === 0) {
-        document.getElementById("progressMessage").textContent = "You are not enrolled in any courses.";
-        return;
-    }
-
-    const courseId = Object.keys(enrolledCourses)[0];
     const courseStartDate = await fetchCourseStartDate(courseId);
 
     if (!courseStartDate) {
@@ -52,7 +49,12 @@ window.onload = async function () {
     }
 
     generatePieChart(ctx, attendanceData);
-    populateAttendanceTable(attendanceData.attendanceRecords);
+    populateAttendanceTable(attendanceData.tableRecords);
+
+    // Add functionality for Back to Dashboard button
+    document.getElementById("backToDashboard").addEventListener("click", function () {
+        window.location.href = "../HTML/student_dashboard.html"; // Replace with your actual dashboard path
+    });
 };
 
 // Fetch logged-in user details by email
@@ -60,23 +62,20 @@ async function fetchLoggedInUserByEmail() {
     return new Promise((resolve) => {
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                const email = user.email; // Use the email to find the user record
+                const email = user.email;
                 const usersRef = ref(db, `users`);
                 const snapshot = await get(usersRef);
                 if (snapshot.exists()) {
                     const users = snapshot.val();
                     for (const studentId in users) {
                         if (users[studentId].email === email) {
-                            console.log("User found:", users[studentId]); // Debug log
                             resolve({ ...users[studentId], studentId });
                             return;
                         }
                     }
                 }
-                console.error("No user record found for email:", email);
                 resolve(null);
             } else {
-                console.error("No user is logged in.");
                 resolve(null);
             }
         });
@@ -87,14 +86,10 @@ async function fetchLoggedInUserByEmail() {
 async function fetchCourseStartDate(courseId) {
     const courseRef = ref(db, `courses/${courseId}`);
     const snapshot = await get(courseRef);
-
-    if (!snapshot.exists()) return null;
-
-    const course = snapshot.val();
-    return new Date(course.date); // Assuming `date` is the start date in the database
+    return snapshot.exists() ? new Date(snapshot.val().date) : null;
 }
 
-// Fetch attendance data for a student
+// Fetch attendance data
 async function fetchAttendanceData(courseId, studentId, courseStartDate) {
     const attendanceRef = ref(db, `attendance/${courseId}`);
     const snapshot = await get(attendanceRef);
@@ -102,34 +97,31 @@ async function fetchAttendanceData(courseId, studentId, courseStartDate) {
     if (!snapshot.exists()) return null;
 
     const attendance = snapshot.val();
-    const records = [];
-    let totalPresent = 0, totalAbsent = 0, totalLate = 0;
+    const tableRecords = [];
+    let totalPresent = 0,
+        totalAbsent = 0,
+        totalLate = 0;
 
     for (const date in attendance) {
         const studentAttendance = attendance[date][studentId];
-        const currentDate = new Date(date);
+        if (!studentAttendance) continue;
 
-        // Skip dates before the course start date
-        if (currentDate < courseStartDate) continue;
+        const status = studentAttendance.status;
+        totalPresent += studentAttendance.present || 0;
+        totalAbsent += studentAttendance.absent || 0;
+        totalLate += studentAttendance.late || 0;
 
-        if (studentAttendance) {
-            const status = studentAttendance.status;
-            totalPresent += studentAttendance.present || 0;
-            totalAbsent += studentAttendance.absent || 0;
-            totalLate += studentAttendance.late || 0;
-
-            if (status === "Absent" || status === "Late") {
-                records.push({
-                    date,
-                    day: currentDate.toLocaleDateString('en-US', { weekday: 'long' }),
-                    status,
-                    percentage: calculatePercentage(status),
-                });
-            }
+        if (status === "Absent" || status === "Late") {
+            tableRecords.push({
+                date,
+                day: new Date(date).toLocaleDateString("en-US", { weekday: "long" }),
+                status,
+                percentage: calculatePercentage(status),
+            });
         }
     }
 
-    return { attendanceRecords: records, totalPresent, totalAbsent, totalLate };
+    return { tableRecords, totalPresent, totalAbsent, totalLate };
 }
 
 // Generate the pie chart
@@ -141,13 +133,15 @@ function generatePieChart(ctx, attendanceData) {
     ];
 
     new Chart(ctx, {
-        type: 'pie',
+        type: "pie",
         data: {
-            labels: ['Present Days', 'Absent Days', 'Late Days'],
-            datasets: [{
-                data: chartData,
-                backgroundColor: ['#4caf50', '#f44336', '#ffeb3b'],
-            }]
+            labels: ["Present Days", "Absent Days", "Late Days"],
+            datasets: [
+                {
+                    data: chartData,
+                    backgroundColor: ["#4caf50", "#f44336", "#ffeb3b"],
+                },
+            ],
         },
         options: {
             responsive: true,
@@ -155,26 +149,19 @@ function generatePieChart(ctx, attendanceData) {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'bottom',
+                    position: "bottom",
                 },
-            }
-        }
+            },
+        },
     });
-}
-
-// Calculate percentage points based on attendance status
-function calculatePercentage(status) {
-    if (status === "Present") return "100%";
-    if (status === "Late") return "80%";
-    return "0%";
 }
 
 // Populate the attendance table
 function populateAttendanceTable(records) {
     const tableBody = document.querySelector("#attendanceTable tbody");
-    tableBody.innerHTML = ""; // Clear existing rows
+    tableBody.innerHTML = "";
 
-    records.forEach(record => {
+    records.forEach((record) => {
         const row = `
             <tr>
                 <td>${record.date}</td>
@@ -187,7 +174,9 @@ function populateAttendanceTable(records) {
     });
 }
 
-// Back to Dashboard Button functionality
-document.getElementById('backToDashboard').onclick = function () {
-    window.location.href = '../HTML/student_dashboard.html';
-};
+// Calculate attendance percentage
+function calculatePercentage(status) {
+    if (status === "Present") return "100%";
+    if (status === "Late") return "80%";
+    return "0%";
+}

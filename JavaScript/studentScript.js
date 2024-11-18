@@ -100,7 +100,8 @@ function displayEnrolledCourses(courseIds) {
         const trackButton = document.createElement('button');
         trackButton.textContent = 'Track Attendance';
         trackButton.classList.add('track-btn');
-        trackButton.onclick = () => trackAttendance(course.title);
+        trackButton.onclick = () => trackAttendance(courseId);
+
         card.appendChild(courseTextContainer);
         card.appendChild(trackButton);
 
@@ -113,10 +114,11 @@ function displayEnrolledCourses(courseIds) {
 }
 
 // Track attendance function
-function trackAttendance(courseTitle) {
-  alert(`Tracking attendance for: ${courseTitle}`);
-  window.location.href = '../HTML/pieChart.html';
+function trackAttendance(courseId) {
+  alert(`Tracking attendance for course ID: ${courseId}`);
+  window.location.href = `../HTML/pieChart.html?courseId=${courseId}`;
 }
+
 
 // Logout function
 window.logout = function() {
