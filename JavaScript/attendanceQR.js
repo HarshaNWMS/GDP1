@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/fireba
 import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 import QRCode from "https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js";
 
-// Firebase config
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
   authDomain: "qrcodescanner-150cc.firebaseapp.com",
@@ -21,44 +21,63 @@ const db = getDatabase();
 const urlParams = new URLSearchParams(window.location.search);
 const courseId = urlParams.get("courseId");
 
+if (!courseId) {
+    alert("Course ID not found! Redirecting...");
+    window.location.href = "../HTML/instructor_dashboard.html";
+}
+
+// Helper function to get today's date in Central Time (UTC-6)
+function getCentralTimeDate() {
+    const now = new Date();
+    const centralOffset = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+    const centralTime = new Date(now.getTime() - centralOffset);
+    return centralTime.toISOString().split("T")[0]; // Format YYYY-MM-DD
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  const qrContainer = document.getElementById("qrImage");
-  const today = new Date().toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
+    const qrContainer = document.createElement("canvas");
+    document.getElementById("qrImage").replaceWith(qrContainer);
 
-  // Generate QR Code Data
-  const qrData = JSON.stringify({ courseId, date: today });
+    const today = getCentralTimeDate();
+    const qrData = JSON.stringify({ courseId, date: today });
 
-  // Generate QR Code
-  QRCode.toCanvas(qrContainer, qrData, (error) => {
-    if (error) console.error(error);
-  });
-
-  // Initialize attendance for all enrolled students
-  const enrolledRef = ref(db, `courses/${courseId}/enrolledStudents`);
-  get(enrolledRef)
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        const enrolledStudents = snapshot.val();
-        const attendanceUpdates = {};
-
-        for (const studentId in enrolledStudents) {
-          attendanceUpdates[studentId] = {
-            status: "Absent", // Default status is "Absent"
-            present: 0,
-            late: 0,
-            absent: 1, // Set to 1 by default for all students
-          };
+    QRCode.toCanvas(qrContainer, qrData, (error) => {
+        if (error) {
+            alert("Failed to generate QR Code. Try again!");
+            console.error(error);
         }
+    });
 
-        // Save initial attendance records
-        set(ref(db, `attendance/${courseId}/${today}`), attendanceUpdates).catch((error) => {
-          console.error("Error saving attendance records:", error);
-        });
-      } else {
-        console.error("No enrolled students found for this course.");
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching enrolled students:", error);
+    const attendanceRef = ref(db, `attendance/${courseId}/${today}`);
+    get(attendanceRef).then((snapshot) => {
+        if (!snapshot.exists()) {
+            initializeAttendance(courseId, today);
+        }
+    }).catch((error) => {
+        alert("Error checking attendance data.");
+        console.error(error);
     });
 });
+
+// Initialize attendance for all students
+function initializeAttendance(courseId, date) {
+    const enrolledRef = ref(db, `courses/${courseId}/enrolledStudents`);
+    get(enrolledRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const students = snapshot.val();
+            const attendance = {};
+            Object.keys(students).forEach((studentId) => {
+                attendance[studentId] = { status: "Absent", present: 0, late: 0, absent: 1 };
+            });
+            set(ref(db, `attendance/${courseId}/${date}`), attendance).catch((error) => {
+                alert("Failed to initialize attendance.");
+                console.error(error);
+            });
+        } else {
+            alert("No enrolled students found.");
+        }
+    }).catch((error) => {
+        alert("Error fetching enrolled students.");
+        console.error(error);
+    });
+}
