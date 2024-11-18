@@ -13,6 +13,7 @@ const firebaseConfig = {
   appId: "1:425306294564:web:c514a419f71dde9fc3cbb1",
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase();
@@ -39,6 +40,7 @@ auth.onAuthStateChanged((user) => {
         document.getElementById("currentDate").textContent = today;
         loadAttendance(courseId, today);
 
+        // Previous Day Button
         document.getElementById("backButton").addEventListener("click", () => {
             const currentDate = document.getElementById("currentDate").textContent;
             const newDate = changeDate(currentDate, -1);
@@ -46,6 +48,7 @@ auth.onAuthStateChanged((user) => {
             loadAttendance(courseId, newDate);
         });
 
+        // Next Day Button
         document.getElementById("forwardButton").addEventListener("click", () => {
             const currentDate = document.getElementById("currentDate").textContent;
             const newDate = changeDate(currentDate, 1);
@@ -57,44 +60,53 @@ auth.onAuthStateChanged((user) => {
             }
         });
 
+        // Generate QR Button
         document.getElementById("generateQRButton").addEventListener("click", () => {
-            // Ensure courseId exists and redirect to QR page
-            if (courseId) {
-                window.location.href = `../HTML/attendanceQR.html?courseId=${courseId}`;
-            } else {
-                alert("No course selected! Cannot generate QR.");
-            }
+            window.location.href = `../HTML/attendanceQR.html?courseId=${courseId}`;
         });
 
+        // Back to Dashboard Button
         document.getElementById("backToDashboardButton").addEventListener("click", () => {
             window.location.href = "../HTML/instructor_dashboard.html";
         });
+    } else {
+        console.error("No user is signed in.");
+        window.location.href = "../HTML/index.html";
     }
 });
 
+// Load attendance data
 function loadAttendance(courseId, date) {
     const enrolledRef = ref(db, `courses/${courseId}/enrolledStudents`);
     const attendanceRef = ref(db, `attendance/${courseId}/${date}`);
     const tableBody = document.querySelector("#attendanceTable tbody");
 
-    tableBody.innerHTML = "";
+    tableBody.innerHTML = ""; // Clear existing table rows
 
     get(enrolledRef).then((snapshot) => {
         if (snapshot.exists()) {
             const students = snapshot.val();
             get(attendanceRef).then((attendanceSnap) => {
                 const attendance = attendanceSnap.exists() ? attendanceSnap.val() : {};
+                const currentTime = new Date();
 
                 for (const studentId in students) {
                     get(ref(db, `users/${studentId}`)).then((userSnap) => {
                         const user = userSnap.val();
 
-                        const record = attendance[studentId] || { present: 0, late: 0, absent: 0, status: "Absent" };
-                        if (!attendance[studentId]) {
-                            record.absent += 1;
+                        // Default attendance record
+                        const record = attendance[studentId] || { status: "Unmarked", present: 0, late: 0, absent: 0 };
+
+                        // Automatically mark unscanned students as Absent after 20 minutes from class start
+                        const classStartTime = new Date(`${date}T12:00:00`); // Class starts at 12:00 PM
+                        const gracePeriod = 20 * 60 * 1000; // 20 minutes in milliseconds
+                        if (currentTime - classStartTime > gracePeriod && record.status === "Unmarked") {
+                            record.status = "Absent";
+                            record.absent += 1; // Increment cumulative absent count
                             update(ref(db, `attendance/${courseId}/${date}/${studentId}`), record).catch(console.error);
                         }
 
+                        // Generate table row
                         const row = `
                             <tr>
                                 <td>${user.firstName} ${user.lastName}</td>
@@ -114,10 +126,55 @@ function loadAttendance(courseId, date) {
                     });
                 }
             });
+        } else {
+            alert("No enrolled students found.");
         }
-    }).catch(console.error);
+    }).catch((error) => {
+        alert("Failed to load attendance data.");
+        console.error(error);
+    });
 }
 
+// Update attendance manually
+window.updateAttendance = (courseId, date, studentId, newStatus) => {
+    const attendancePath = `attendance/${courseId}/${date}/${studentId}`;
+    get(ref(db, attendancePath))
+        .then((snapshot) => {
+            const data = snapshot.exists() ? snapshot.val() : { present: 0, late: 0, absent: 0 };
+            const previousStatus = data.status || "Unmarked";
+
+            // Adjust attendance counts
+            if (previousStatus === "Present") {
+                data.present -= 1;
+            } else if (previousStatus === "Late") {
+                data.late -= 1;
+            } else if (previousStatus === "Absent") {
+                data.absent -= 1;
+            }
+
+            if (newStatus === "Present") {
+                data.present += 1;
+            } else if (newStatus === "Late") {
+                data.late += 1;
+            } else if (newStatus === "Absent") {
+                data.absent += 1; // Increment absent if manually set
+            }
+
+            data.status = newStatus;
+
+            // Save updated data
+            update(ref(db, attendancePath), data)
+                .then(() => {
+                    alert("Attendance updated successfully.");
+                    const currentDate = document.getElementById("currentDate").textContent;
+                    loadAttendance(courseId, currentDate);
+                })
+                .catch((error) => console.error("Error updating attendance:", error));
+        })
+        .catch((error) => console.error("Error fetching attendance data:", error));
+};
+
+// Adjust date (e.g., for Previous/Next Day)
 function changeDate(date, delta) {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + delta);

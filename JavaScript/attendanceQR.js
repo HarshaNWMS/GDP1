@@ -3,7 +3,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/fireba
 import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 import QRCode from "https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js";
 
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
   authDomain: "qrcodescanner-150cc.firebaseapp.com",
@@ -59,19 +58,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Initialize attendance for all students
+// Initialize attendance for all students, carry cumulative values
 function initializeAttendance(courseId, date) {
     const enrolledRef = ref(db, `courses/${courseId}/enrolledStudents`);
+    const attendanceRef = ref(db, `attendance/${courseId}`);
     get(enrolledRef).then((snapshot) => {
         if (snapshot.exists()) {
             const students = snapshot.val();
-            const attendance = {};
-            Object.keys(students).forEach((studentId) => {
-                attendance[studentId] = { status: "Absent", present: 0, late: 0, absent: 1 };
-            });
-            set(ref(db, `attendance/${courseId}/${date}`), attendance).catch((error) => {
-                alert("Failed to initialize attendance.");
-                console.error(error);
+
+            get(attendanceRef).then((attendanceSnapshot) => {
+                const cumulativeAttendance = attendanceSnapshot.exists() ? attendanceSnapshot.val() : {};
+                const updatedAttendance = {};
+
+                Object.keys(students).forEach((studentId) => {
+                    const prevRecord = cumulativeAttendance[studentId] || { present: 0, late: 0, absent: 0 };
+                    updatedAttendance[studentId] = {
+                        ...prevRecord, // Carry cumulative counts forward
+                        status: "Unmarked", // Reset status for the new day
+                    };
+                });
+
+                set(ref(db, `attendance/${courseId}/${date}`), updatedAttendance).catch((error) => {
+                    alert("Failed to initialize attendance.");
+                    console.error(error);
+                });
             });
         } else {
             alert("No enrolled students found.");

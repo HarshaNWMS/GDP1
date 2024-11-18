@@ -13,7 +13,6 @@ const firebaseConfig = {
   appId: "1:425306294564:web:c514a419f71dde9fc3cbb1",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase();
 const auth = getAuth();
@@ -26,7 +25,6 @@ function onScanSuccess(decodedText) {
 
         auth.onAuthStateChanged((user) => {
             if (user) {
-                // Use the logged-in user's email to map to studentId
                 mapEmailToStudentId(user.email, courseId).then((studentId) => {
                     if (studentId) {
                         markAttendance(courseId, date, studentId);
@@ -44,7 +42,6 @@ function onScanSuccess(decodedText) {
     }
 }
 
-// Map Firebase Auth email to studentId
 function mapEmailToStudentId(email, courseId) {
     const usersRef = ref(db, `users`);
     return get(usersRef).then((snapshot) => {
@@ -60,22 +57,15 @@ function mapEmailToStudentId(email, courseId) {
     });
 }
 
-// Mark attendance for the student
 function markAttendance(courseId, date, studentId) {
     const attendanceRef = ref(db, `attendance/${courseId}/${date}/${studentId}`);
-    const qrScanTime = new Date(); // Capture the scan time
+    const qrScanTime = new Date();
 
     get(attendanceRef).then((snapshot) => {
-        const data = snapshot.exists() ? snapshot.val() : { present: 0, late: 0, absent: 1, status: "Absent" };
-        const attendanceStartTime = new Date(`${date}T12:00:00`); // Class start time (12:00 PM)
-        const timeDifference = (qrScanTime - attendanceStartTime) / 60000; // Time difference in minutes
+        const data = snapshot.exists() ? snapshot.val() : { present: 0, late: 0, absent: 0, status: "Unmarked" };
+        const attendanceStartTime = new Date(`${date}T12:00:00`);
+        const timeDifference = (qrScanTime - attendanceStartTime) / 60000;
 
-        // Decrement absent if status is changed to Present or Late
-        if (data.status === "Absent") {
-            data.absent -= 1; // Reduce absent count by 1
-        }
-
-        // Determine status and update counts
         if (timeDifference <= 5) {
             data.present += 1;
             data.status = "Present";
