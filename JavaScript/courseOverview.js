@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -18,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase();
 
-// Get URL parameters
+// Get courseId from URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 const courseId = urlParams.get("courseId");
 
@@ -27,114 +27,136 @@ if (!courseId) {
   window.location.href = "../HTML/instructor_dashboard.html";
 }
 
-// Load enrolled students and attendance data
+// Listen for auth state
 auth.onAuthStateChanged((user) => {
   if (user) {
-    loadEnrolledStudentsAndAttendance(courseId);
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("currentDate").textContent = today;
+    loadAttendance(courseId, today);
+
+    // Navigation buttons
+    document.getElementById("backButton").addEventListener("click", () => {
+      const currentDate = document.getElementById("currentDate").textContent;
+      const newDate = changeDate(currentDate, -1);
+      document.getElementById("currentDate").textContent = newDate;
+      loadAttendance(courseId, newDate);
+    });
+
+    document.getElementById("forwardButton").addEventListener("click", () => {
+      const currentDate = document.getElementById("currentDate").textContent;
+      const newDate = changeDate(currentDate, 1);
+      if (newDate <= new Date().toISOString().split("T")[0]) {
+        document.getElementById("currentDate").textContent = newDate;
+        loadAttendance(courseId, newDate);
+      } else {
+        alert("You cannot navigate to future dates.");
+      }
+    });
+
+    // Generate QR Button
+    document.getElementById("generateQRButton").addEventListener("click", () => {
+      window.location.href = `../HTML/attendanceQR.html?courseId=${courseId}`;
+    });
+
+    // Back to Dashboard Button
+    document.getElementById("backToDashboardButton").addEventListener("click", () => {
+      window.location.href = "../HTML/instructor_dashboard.html";
+    });
   } else {
     console.error("No user is signed in.");
     window.location.href = "../HTML/index.html";
   }
 });
 
-// Function to load enrolled students and attendance data
-function loadEnrolledStudentsAndAttendance(courseId) {
-  const today = new Date().toISOString().split("T")[0]; // Default to today's date
-  updateAttendanceTable(courseId, today);
-
-  const forwardButton = document.getElementById("forwardButton");
-  const backButton = document.getElementById("backButton");
-
-  forwardButton.addEventListener("click", () => {
-    const newDate = incrementDate(today, 1);
-    updateAttendanceTable(courseId, newDate);
-  });
-
-  backButton.addEventListener("click", () => {
-    const newDate = incrementDate(today, -1);
-    updateAttendanceTable(courseId, newDate);
-  });
-}
-
-// Update the attendance table
-function updateAttendanceTable(courseId, date) {
+// Load attendance data
+function loadAttendance(courseId, date) {
   const enrolledRef = ref(db, `courses/${courseId}/enrolledStudents`);
   const attendanceRef = ref(db, `attendance/${courseId}/${date}`);
-  const attendanceTable = document.getElementById("attendanceTable");
+  const tableBody = document.querySelector("#attendanceTable tbody");
 
-  // Clear table and set headers
-  attendanceTable.innerHTML = `
-        <tr>
-            <th>Student Name</th>
-            <th>Attendance Status</th>
-        </tr>
-    `;
+  tableBody.innerHTML = "";
 
-  // Fetch enrolled students
   get(enrolledRef)
-    .then((enrolledSnapshot) => {
-      if (enrolledSnapshot.exists()) {
-        const enrolledStudents = enrolledSnapshot.val();
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const students = snapshot.val();
+        get(attendanceRef).then((attendanceSnap) => {
+          const attendance = attendanceSnap.exists() ? attendanceSnap.val() : {};
+          for (const studentId in students) {
+            get(ref(db, `users/${studentId}`)).then((userSnap) => {
+              const user = userSnap.val();
+              const status = attendance[studentId]?.status || "Yet to Take";
+              const present = attendance[studentId]?.present || 0;
+              const late = attendance[studentId]?.late || 0;
+              const absent = attendance[studentId]?.absent || 0;
 
-        // Fetch attendance data
-        get(attendanceRef)
-          .then((attendanceSnapshot) => {
-            const attendanceData = attendanceSnapshot.exists()
-              ? attendanceSnapshot.val()
-              : {};
-
-            // Populate table with enrolled students
-            for (const studentId in enrolledStudents) {
-              // Fetch student's details
-              get(ref(db, `users/${studentId}`))
-                .then((studentSnapshot) => {
-                  if (studentSnapshot.exists()) {
-                    const student = studentSnapshot.val();
-                    const status = attendanceData[studentId]?.status || "Absent"; // Default to Absent
-
-                    // Create a row for the student
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                          <td>${student.firstName} ${student.lastName}</td>
-                          <td>${status}</td>
-                      `;
-                    attendanceTable.appendChild(row);
-                  }
-                })
-                .catch((error) => {
-                  console.error(
-                    `Error fetching details for student ${studentId}:`,
-                    error
-                  );
-                });
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching attendance data:", error);
-          });
-      } else {
-        const row = document.createElement("tr");
-        row.innerHTML = `<td colspan="2">No enrolled students for this course.</td>`;
-        attendanceTable.appendChild(row);
+              const row = `
+                <tr>
+                  <td>${user.firstName} ${user.lastName}</td>
+                  <td>${status}</td>
+                  <td>${present}</td>
+                  <td>${late}</td>
+                  <td>${absent}</td>
+                  <td>
+                    <select id="attendanceSelect_${studentId}" name="attendanceSelect_${studentId}" onchange="updateAttendance('${courseId}', '${date}', '${studentId}', this.value)">
+                      <option value="Present" ${status === "Present" ? "selected" : ""}>Present</option>
+                      <option value="Late" ${status === "Late" ? "selected" : ""}>Late</option>
+                      <option value="Absent" ${status === "Absent" ? "selected" : ""}>Absent</option>
+                    </select>
+                  </td>
+                </tr>`;
+              tableBody.innerHTML += row;
+            });
+          }
+        });
       }
     })
-    .catch((error) => {
-      console.error("Error fetching enrolled students:", error);
-    });
+    .catch((error) => console.error("Error loading attendance data:", error));
 }
 
-// Increment or decrement the date
-function incrementDate(date, days) {
+// Update attendance logic
+window.updateAttendance = (courseId, date, studentId, newStatus) => {
+  const attendancePath = `attendance/${courseId}/${date}/${studentId}`;
+  get(ref(db, attendancePath))
+    .then((snapshot) => {
+      const data = snapshot.exists() ? snapshot.val() : { present: 0, late: 0, absent: 0 };
+      const previousStatus = data.status || "Yet to Take";
+
+      // Decrement previous status
+      if (previousStatus === "Present") {
+        data.present = (data.present || 1) - 1;
+      } else if (previousStatus === "Late") {
+        data.late = (data.late || 1) - 1;
+      } else if (previousStatus === "Absent") {
+        data.absent = (data.absent || 1) - 1;
+      }
+
+      // Increment new status
+      if (newStatus === "Present") {
+        data.present = (data.present || 0) + 1;
+      } else if (newStatus === "Late") {
+        data.late = (data.late || 0) + 1;
+      } else if (newStatus === "Absent") {
+        data.absent = (data.absent || 0) + 1;
+      }
+
+      data.status = newStatus;
+
+      // Save updated data
+      update(ref(db, attendancePath), data)
+        .then(() => {
+          alert("Attendance updated successfully");
+          const currentDate = document.getElementById("currentDate").textContent;
+          loadAttendance(courseId, currentDate);
+        })
+        .catch((error) => console.error("Error updating attendance:", error));
+    })
+    .catch((error) => console.error("Error fetching attendance data:", error));
+};
+
+// Date navigation logic
+function changeDate(date, delta) {
   const newDate = new Date(date);
-  newDate.setDate(newDate.getDate() + days);
+  newDate.setDate(newDate.getDate() + delta);
   return newDate.toISOString().split("T")[0];
 }
-
-// Button handlers
-document.getElementById("generateQRButton").addEventListener("click", () => {
-  window.location.href = `../HTML/attendanceQR.html?courseId=${courseId}`;
-});
-
-document.getElementById("backToDashboardButton").addEventListener("click", () => {
-  window.location.href = "../HTML/instructor_dashboard.html";
-});

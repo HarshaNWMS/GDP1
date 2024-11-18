@@ -14,21 +14,26 @@
     </div>
     <div class="container">
         <h1>Course Overview</h1>
+        <div class="date-navigation">
+            <button id="backButton">← Previous Day</button>
+            <span id="currentDate"></span>
+            <button id="forwardButton">Next Day →</button>
+        </div>
         <table id="attendanceTable">
             <thead>
                 <tr>
                     <th>Student Name</th>
                     <th>Attendance Status</th>
+                    <th>Present</th>
+                    <th>Late</th>
+                    <th>Absent</th>
+                    <th>Change Status</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Attendance rows will be dynamically loaded here -->
+                <!-- Attendance rows dynamically populated here -->
             </tbody>
         </table>
-        <div class="date-navigation">
-            <button id="backButton">← Previous Day</button>
-            <button id="forwardButton">Next Day →</button>
-        </div>
     </div>
 </body>
 </html>
