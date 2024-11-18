@@ -3,35 +3,37 @@ body {
     background-color: #f0f4f8;
     margin: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     flex-direction: column;
+    align-items: center;
+    height: 100vh; /* Make the body take the full viewport height */
 }
 
 .chart-container {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 400px;
-    height: 450px; /* Limit height to fit the chart and text */
-    max-width: 100%;
-    position: relative;
-
+    width: 90%;
+    max-width: 400px; /* Restrict maximum width */
+    height: auto; /* Automatically adjust based on content */
+    max-height: 500px; /* Set a maximum height for the container */
+    overflow: hidden; /* Prevent stretching due to large content */
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute content evenly */
 }
 
 canvas {
     max-width: 100%;
-    height: 200px;  /* Reduced canvas height for better fit */
+    height: 150px; /* Keep the canvas smaller for compact design */
 }
 
 h1 {
-    font-size: 1.5rem;  /* Smaller font size to fit better */
+    font-size: 1.2rem; /* Adjusted for smaller cards */
     color: #333;
     margin-bottom: 10px;
-    text-align: center;  /* Ensures the title stays within the container */
 }
 
 #progressMessage {
@@ -40,17 +42,13 @@ h1 {
     margin-top: 10px;
 }
 
-/* Button placed outside the container at the top-right corner of the page */
-
 #backToDashboard {
-    position: fixed;
-    top: 20px;
-    right: 20px;
+    margin-top: 15px;
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
+    padding: 8px 15px;
+    border-radius: 15px;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
@@ -58,4 +56,46 @@ h1 {
 
 #backToDashboard:hover {
     background-color: #0056b3;
+}
+
+/* Attendance Table */
+.attendance-table {
+    margin-top: 15px;
+    width: 100%;
+    height: 200px; /* Limit table height to keep it compact */
+    overflow-y: auto; /* Add vertical scrolling for long content */
+    border-collapse: collapse;
+    text-align: left;
+    background-color: #fff;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.attendance-table table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.attendance-table th, .attendance-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.attendance-table th {
+    background-color: #007bff;
+    color: white;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-size: 12px;
+}
+
+.attendance-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.attendance-table tr:hover {
+    background-color: #f1f1f1;
 }
