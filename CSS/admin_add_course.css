@@ -67,6 +67,7 @@ body {
 }
 
 .submit-btn {
+    
     padding: 12px;
     background-color: #00796b;
     color: white;
@@ -219,16 +220,21 @@ body {
 
 /* Bulk Upload Button */
 .bulk-upload-btn {
-    padding: 12px 20px;
+    display: block; /* Centers the button horizontally */
+    margin: 20px auto; /* Adds vertical and horizontal centering */
+    padding: 12px 12px 5px;
     background-color: #004d40;
-    color: white;
-    border-radius: 30px;
+    width: 150px;
+    color: #ffffff !important; /* Force text color to white */
+    border-radius: 10px;
     text-align: center;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for color change */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+
 
 .bulk-upload-btn:hover {
     background-color: #00796b;
