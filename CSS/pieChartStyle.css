@@ -1,3 +1,4 @@
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f4f8;
@@ -5,45 +6,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh; /* Make the body take the full viewport height */
+    height: 100vh;
 }
 
-.chart-container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 90%;
-    max-width: 400px; /* Restrict maximum width */
-    height: auto; /* Automatically adjust based on content */
-    max-height: 500px; /* Set a maximum height for the container */
-    overflow: hidden; /* Prevent stretching due to large content */
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Distribute content evenly */
-}
-
-canvas {
-    max-width: 100%;
-    height: 150px; /* Keep the canvas smaller for compact design */
-}
-
-h1 {
-    font-size: 1.2rem; /* Adjusted for smaller cards */
-    color: #333;
-    margin-bottom: 10px;
-}
-
-#progressMessage {
-    font-size: 1rem;
-    color: #777;
-    margin-top: 10px;
-}
-
+/* Back to Dashboard Button */
 #backToDashboard {
-    margin-top: 15px;
+    margin-top: 10px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -58,17 +29,53 @@ h1 {
     background-color: #0056b3;
 }
 
-/* Attendance Table */
+/* Chart Container Styling */
+.chart-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+    max-height: 500px;
+    overflow: hidden;
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+canvas {
+    max-width: 100%;
+    height: 150px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#progressMessage {
+    font-size: 1rem;
+    color: #777;
+    margin-top: 10px;
+}
+
+/* Attendance Table Styling */
 .attendance-table {
     margin-top: 15px;
     width: 100%;
-    height: 200px; /* Limit table height to keep it compact */
-    overflow-y: auto; /* Add vertical scrolling for long content */
+    max-width: 600px;
+    height: 200px;
+    overflow-y: auto;
     border-collapse: collapse;
     text-align: left;
     background-color: #fff;
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .attendance-table table {
