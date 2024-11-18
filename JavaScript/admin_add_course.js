@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import { getDatabase, ref, set, update, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
-// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
     authDomain: "qrcodescanner-150cc.firebaseapp.com",
@@ -15,7 +14,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Add a Single Course
 document.querySelector('.course-form').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -27,7 +25,9 @@ document.querySelector('.course-form').addEventListener('submit', async (event) 
         section: document.getElementById('section').value,
         credits: parseInt(document.getElementById('credits').value, 10),
         title: document.getElementById('title').value,
-        days: document.getElementById('days').value,
+        days: Array.from(document.querySelectorAll("#days input[type='checkbox']:checked"))
+            .map((checkbox) => checkbox.value)
+            .join(""),
         time: document.getElementById('time').value,
         instructor: document.getElementById('instructor').value,
         capacity: parseInt(document.getElementById('capacity').value, 10),
@@ -43,7 +43,6 @@ document.querySelector('.course-form').addEventListener('submit', async (event) 
     }
 });
 
-// Handle Bulk Upload
 document.getElementById("bulkUploadInput").addEventListener("change", function (event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -66,7 +65,6 @@ document.getElementById("bulkUploadInput").addEventListener("change", function (
     reader.readAsText(file);
 });
 
-// Upload Multiple Courses
 async function bulkUploadCourses(courses) {
     const updates = {};
 
@@ -97,40 +95,31 @@ async function bulkUploadCourses(courses) {
     }
 }
 
-// Fetch Instructors for Autocomplete
-async function fetchInstructors() {
-    const usersRef = ref(db, "users");
-    try {
-        const snapshot = await get(usersRef);
-        if (snapshot.exists()) {
-            const instructors = [];
-            snapshot.forEach(childSnapshot => {
-                const user = childSnapshot.val();
-                if (user.role === "instructor") {
-                    instructors.push(user);
-                }
-            });
-            return instructors;
-        }
-    } catch (error) {
-        console.error("Error fetching instructors:", error);
-    }
-    return [];
-}
-
-// Autocomplete for Instructor Field
-document.getElementById('instructor').addEventListener('input', async function () {
-    const input = this.value.toLowerCase();
-    const instructors = await fetchInstructors();
-
-    const suggestions = instructors.filter(inst =>
-        inst.firstName.toLowerCase().includes(input) || inst.lastName.toLowerCase().includes(input)
-    );
-    console.log("Suggestions:", suggestions);
-});
-
-// Flatpickr Initialization for Date Picker
 flatpickr(".date-picker", {
     dateFormat: "Y-m-d",
     allowInput: true,
 });
+
+// Populate instructors dynamically
+async function populateInstructors() {
+    const instructorsRef = ref(db, "users");
+    const select = document.getElementById("instructor");
+
+    try {
+        const snapshot = await get(instructorsRef);
+        if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+                const user = childSnapshot.val();
+                if (user.role === "instructor") {
+                    const option = document.createElement("option");
+                    option.value = childSnapshot.key;
+                    option.textContent = `${user.firstName} ${user.lastName}`;
+                    select.appendChild(option);
+                }
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching instructors:", error);
+    }
+}
+populateInstructors();

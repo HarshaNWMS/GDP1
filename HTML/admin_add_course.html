@@ -68,7 +68,32 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="days">Days: <span class="asterisk">*</span></label>
-                    <input type="text" id="days" name="days" required>
+                    <div id="days">
+                        <label class="day-option">
+                            <input type="checkbox" value="M">
+                            <span>M</span>
+                        </label>
+                        <label class="day-option">
+                            <input type="checkbox" value="T">
+                            <span>T</span>
+                        </label>
+                        <label class="day-option">
+                            <input type="checkbox" value="W">
+                            <span>W</span>
+                        </label>
+                        <label class="day-option">
+                            <input type="checkbox" value="Th">
+                            <span>Th</span>
+                        </label>
+                        <label class="day-option">
+                            <input type="checkbox" value="F">
+                            <span>F</span>
+                        </label>
+                        <label class="day-option">
+                            <input type="checkbox" value="S">
+                            <span>S</span>
+                        </label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="time">Time: <span class="asterisk">*</span></label>
@@ -79,8 +104,10 @@
             <!-- Form Row 6 -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="instructor">Instructor ID: <span class="asterisk">*</span></label>
-                    <input type="text" id="instructor" name="instructor" required>
+                    <label for="instructor">Instructor: <span class="asterisk">*</span></label>
+                    <select id="instructor" name="instructor" required>
+                        <option value="">Select an Instructor</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="capacity">Capacity: <span class="asterisk">*</span></label>
