@@ -78,7 +78,7 @@ function enrollStudentsInCourse(students, courseId) {
 
     update(ref(db), updates)
         .then(() => {
-            document.getElementById('statusMessage').textContent = "Students enrolled successfully!";
+            document.getElementById('statusMessage').textContent = "Students enrolled successfully into courses!";
         })
         .catch((error) => {
             console.error("Error enrolling students:", error);
