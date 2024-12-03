@@ -9,29 +9,31 @@
 </head>
 <body>
     <div class="top-right-buttons">
-        <button id="backToDashboardButton">Back to Dashboard</button>
-        <button id="generateQRButton">Generate QR</button>
+        <button id="backToDashboardButton" class="secondary">Back to Dashboard</button>
     </div>
+
     <div class="container">
         <h1>Course Overview</h1>
         <div class="date-navigation">
-            <button id="backButton">← Previous Day</button>
+            <button id="backButton">Previous Day</button>
             <span id="currentDate"></span>
-            <button id="forwardButton">Next Day →</button>
+            <button id="forwardButton">Next Day</button>
         </div>
+
         <table id="attendanceTable">
             <thead>
                 <tr>
-                    <th>Student Name</th>
-                    <th>Attendance Status</th>
+                    <th>Student</th>
+                    <th>Status</th>
                     <th>Present</th>
                     <th>Late</th>
                     <th>Absent</th>
-                    <th>Change Status</th>
+                    <th>Excused</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Attendance rows dynamically populated here -->
+                <!-- Rows will be dynamically populated -->
             </tbody>
         </table>
     </div>

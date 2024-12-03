@@ -3,13 +3,13 @@ import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.1/fir
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
-  authDomain: "qrcodescanner-150cc.firebaseapp.com",
-  databaseURL: "https://qrcodescanner-150cc-default-rtdb.firebaseio.com",
-  projectId: "qrcodescanner-150cc",
-  storageBucket: "qrcodescanner-150cc.appspot.com",
-  messagingSenderId: "425306294564",
-  appId: "1:425306294564:web:c514a419f71dde9fc3cbb1"
+    apiKey: "AIzaSyBHNHnLgsm8HJ9-L4XUmIQ03bumJa3JZEE",
+    authDomain: "qrcodescanner-150cc.firebaseapp.com",
+    databaseURL: "https://qrcodescanner-150cc-default-rtdb.firebaseio.com",
+    projectId: "qrcodescanner-150cc",
+    storageBucket: "qrcodescanner-150cc.appspot.com",
+    messagingSenderId: "425306294564",
+    appId: "1:425306294564:web:c514a419f71dde9fc3cbb1",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -78,12 +78,19 @@ function loadCourses(instructorUID) {
                         courseButton.textContent = "Course Overview";
                         courseButton.onclick = () => viewCourseOverview(courseId);
 
+                        // Generate QR Code button
+                        const qrButton = document.createElement("button");
+                        qrButton.textContent = "Generate QR Code";
+                        qrButton.classList.add("generate-qr-btn");
+                        qrButton.onclick = () => generateQRCode(courseId);
+
                         // Append elements
                         courseTextContainer.appendChild(courseTitle);
                         courseTextContainer.appendChild(termText);
 
                         courseCard.appendChild(courseTextContainer);
                         courseCard.appendChild(courseButton);
+                        courseCard.appendChild(qrButton);
 
                         coursesContainer.appendChild(courseCard);
                     }
@@ -102,6 +109,11 @@ function loadCourses(instructorUID) {
         .catch((error) => {
             console.error("Error fetching courses:", error);
         });
+}
+
+// Generate QR Code for a course
+function generateQRCode(courseId) {
+    window.location.href = `../HTML/attendanceQR.html?courseId=${courseId}`;
 }
 
 // Navigate to Course Overview page

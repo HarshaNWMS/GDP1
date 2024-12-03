@@ -93,14 +93,14 @@ h1, h2 {
 /* Course Title */
 
 .course-container h3 {
-    font-size: 1.2em;
+    font-size: 1em;
     margin-bottom: 5px;
 }
 
 /* Term and Department Text */
 
 .course-container p {
-    font-size: 1em;
+    font-size: 0.7em;
     margin-bottom: 5px;
 }
 

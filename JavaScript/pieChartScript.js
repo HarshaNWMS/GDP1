@@ -53,9 +53,15 @@ window.onload = async function () {
 
     // Add functionality for Back to Dashboard button
     document.getElementById("backToDashboard").addEventListener("click", function () {
-        window.location.href = "../HTML/student_dashboard.html"; // Replace with your actual dashboard path
+        window.location.href = "../HTML/student_dashboard.html";
     });
 };
+
+// Helper function to calculate the correct day of the week
+function getDayOfWeek(date) {
+    const options = { weekday: "long", timeZone: "UTC" }; // Ensure UTC timezone
+    return new Date(date).toLocaleDateString("en-US", options);
+}
 
 // Fetch logged-in user details by email
 async function fetchLoggedInUserByEmail() {
@@ -100,7 +106,8 @@ async function fetchAttendanceData(courseId, studentId, courseStartDate) {
     const tableRecords = [];
     let totalPresent = 0,
         totalAbsent = 0,
-        totalLate = 0;
+        totalLate = 0,
+        totalExcused = 0;
 
     for (const date in attendance) {
         const studentAttendance = attendance[date][studentId];
@@ -110,18 +117,17 @@ async function fetchAttendanceData(courseId, studentId, courseStartDate) {
         totalPresent += studentAttendance.present || 0;
         totalAbsent += studentAttendance.absent || 0;
         totalLate += studentAttendance.late || 0;
+        totalExcused += studentAttendance.excused || 0;
 
-        if (status === "Absent" || status === "Late") {
-            tableRecords.push({
-                date,
-                day: new Date(date).toLocaleDateString("en-US", { weekday: "long" }),
-                status,
-                percentage: calculatePercentage(status),
-            });
-        }
+        tableRecords.push({
+            date,
+            day: getDayOfWeek(date), // Use updated function for correct day
+            status,
+            percentage: calculatePercentage(status),
+        });
     }
 
-    return { tableRecords, totalPresent, totalAbsent, totalLate };
+    return { tableRecords, totalPresent, totalAbsent, totalLate, totalExcused };
 }
 
 // Generate the pie chart
@@ -130,16 +136,17 @@ function generatePieChart(ctx, attendanceData) {
         attendanceData.totalPresent,
         attendanceData.totalAbsent,
         attendanceData.totalLate,
+        attendanceData.totalExcused,
     ];
 
     new Chart(ctx, {
         type: "pie",
         data: {
-            labels: ["Present Days", "Absent Days", "Late Days"],
+            labels: ["Present", "Absent", "Late", "Excused"],
             datasets: [
                 {
                     data: chartData,
-                    backgroundColor: ["#4caf50", "#f44336", "#ffeb3b"],
+                    backgroundColor: ["#4caf50", "#f44336", "#ffeb3b", "#2196f3"],
                 },
             ],
         },
@@ -178,5 +185,6 @@ function populateAttendanceTable(records) {
 function calculatePercentage(status) {
     if (status === "Present") return "100%";
     if (status === "Late") return "80%";
+    if (status === "Excused") return "100%";
     return "0%";
 }
