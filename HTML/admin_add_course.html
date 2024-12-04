@@ -19,7 +19,15 @@
     <!-- Main Container -->
     <div class="container">
         <h1 class="header">Admin Course Management</h1>
+        <div class="form-group">
+            <h5 style="color:#00796b ; font-size: medium; font-family: Georgia, 'Times New Roman', Times, serif;">Try bulk uploading courses: </h5>
+            <label style="color: white;" for="bulkUploadInput" class="bulk-upload-btn">Import Courses</label>
+            <input type="file" id="bulkUploadInput" accept=".csv" style="display: none;">
+        </div>
+        
+        
         <form class="course-form">
+
             <!-- Form Row 1 -->
             <div class="form-row">
                 <div class="form-group">
@@ -124,11 +132,12 @@
             </div>
 
             <!-- Form Buttons -->
-            <div class="form-group">
-                <button type="submit" class="submit-btn">Add Course</button>
-                <label for="bulkUploadInput" class="bulk-upload-btn">Import Courses</label>
-                <input type="file" id="bulkUploadInput" accept=".csv" style="display: none;">
-            </div>
+            <!-- Form Buttons -->
+<div class="form-group">
+    <button type="submit" class="submit-btn">Add Course</button>
+</div>
+
+
         </form>
     </div>
 </body>
